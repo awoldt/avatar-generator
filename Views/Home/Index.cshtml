@@ -1,0 +1,51 @@
+﻿@{
+	ViewData["Title"] = "Online Avatar Maker - Generate a New Image with AI";
+	ViewBag.MetaDescription = "Easily generate avatars for your online profiles with the help of AI. Describe what you want your avatar to look like and get a random image in seconds.";
+	ViewBag.ogtitle = "Generate your very own avatar in seconds using AI";
+	ViewBag.ogdescription = "Generate a new avatar for your online profiles easily using AI image generation";
+	ViewBag.canonicallink = "https://onlineavatargenerator.com";
+}
+
+<div class="text-start">
+	<h1>AI Avatar Image Generator</h1>
+	<p>Easily generate random pictures to use for your online avatar using artificial intelligence!</p>
+	<form method="post" asp-controller="Home" asp-action="Index" id="avatar_form">
+		<hr />
+		<partial name="_AvatarSelection"/>
+		<div id="submit_btn_area" class="mt-3">
+			<button type="submit" class="btn btn-info" id="submit_btn">Generate Image</button>
+		</div>
+	</form>
+	@if (TempData["200"] != null)
+	{
+			<div class="alert alert-success mt-5">
+				<div class="row">
+					<div class="col-4">
+						<img src="@TempData["200"]" class="img-fluid" id="generated_image"/>
+					</div>
+					<div class="col-8">
+						<h2>Successfully generated image!</h2>
+						<div>
+							Query: <b>@TempData["ImageQuery"]</b>
+						</div>
+
+						<button class="btn btn-primary mt-4"><a href="@TempData["200"]" download style="color: white; text-decoration: none" target="_blank"><img src="/icons/download.svg" alt="download icon"/>Download</a></button>
+					</div>
+
+				</div>
+			</div>
+	}
+	@if (TempData["500"] != null)
+	{
+			<div class="alert alert-danger mt-5">
+				<p>@TempData["500"]</p>
+				@if (TempData["Error"] != null)
+				{
+					<code><b>Error: </b> @TempData["Error"]</code>
+				}
+			</div>
+	}
+	<p class="text-muted mt-5">This app uses <img src="/icons/openai.svg" alt="openai logo" height="20px" width="20px"/><span style="margin-left: 3px">OpenAI</span> image generation</p>
+	<hr>
+	<partial name="_SiteDescription"/>
+</div>
