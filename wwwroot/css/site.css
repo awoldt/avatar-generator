@@ -1,41 +1,61 @@
 html {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 @media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+  html {
+    font-size: 16px;
+  }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.alert p {
+  margin-bottom: 0px;
 }
 
 html {
-    position: relative;
-    min-height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 body {
-    margin-bottom: 60px;
+  margin-bottom: 60px;
 }
 
-#generated_image {
-    border-radius: 25px;
+.base-avatar-radio-select img {
+  width: 50px;
+  margin-right: 10px;
 }
 
-.avatar-base {
-    cursor: pointer;
-    display: inline-block;
-    margin-right: 25px;
-    padding: 10px
+.group {
+  margin-bottom: 25px;
 }
 
-.avatar-base:hover {
-    background-color: rgb(235, 104, 100, .3)
+.form-group {
+  max-width: 600px;
 }
 
-.form-select {
-    max-width: 600px
+#generated_img {
+  width: 600px;
+  border-radius: 10px;
+  border: 2px solid black;
+  margin-top: 20px;
+}
+#generate_another_img_span {
+  cursor: pointer;
+  display: block;
+}
+
+.navbar-brand {
+  color: white !important
+}
+.nav-item a {
+  color: white !important
 }

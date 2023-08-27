@@ -3,55 +3,55 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <meta name="description" content="@ViewBag.MetaDescription" />
-    <meta name="og:title" content="@ViewBag.ogtitle"/>
-    <meta name="og:description" content="@ViewBag.ogdescription"/>
-    <meta property="og:type" content="website" />
-    <link rel="canonical" href="@ViewBag.canonicallink" />
+    <title>OnlineAvatarGenerator</title>
+    <meta property="og:title" content=Generate an online avatar in seconds>
+    <meta property="og:site_name" content=OnlineAvatarGenerator>
+    <meta property="og:url" content=https://onlineavatargenerator.com/>
+    <meta property="og:description" content=Easily generate an avatar for your online persona in seconds using AI. No account needed, create as many images as you want for free.>
+    <meta property="og:type" content=website>
+    <meta property="og:image" content=https://onlineavatargenerator.com/favicon.ico>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/AvatarImageGenerator.styles.css" asp-append-version="true" />
-    <link rel="icon" type="image/svg" href="/favicon.svg">
+    <link rel="stylesheet" href="~/avatargeneratorV2.styles.css" asp-append-version="true" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2QPD9Y02W3"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-      gtag('config', 'G-2QPD9Y02W3');
+    gtag('config', 'G-2QPD9Y02W3');
     </script>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color: white"><img src="/icons/navbar-brand.svg"/><span style="margin-left: 5px;">OnlineAvatarGenerator</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/privacy" style="color: white">Privacy</a>
-        </li>
-        
-        
-      </ul>
-    </div>
-  </div>
-</nav>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/imgs/brand-img.svg" alt="brand image"/>OnlineAvatarGenerator</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                       
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3 mt-5">
+        <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - OnlineAvatarGenerator.com
+            <a href="https://awoldt.com" style="text-decoration: none; color: rgb(108, 117, 125)"><img src="~/imgs/brush.svg"/> <b>Made by Awoldt</b></a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

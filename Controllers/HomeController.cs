@@ -1,104 +1,109 @@
-﻿using AvatarImageGenerator.Models;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using avatargeneratorV2.Models;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 
-namespace AvatarImageGenerator.Controllers
+namespace avatargeneratorV2.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly ILogger<HomeController> _logger;
+    private readonly IHttpClientFactory _httpclient;
+    private readonly IConfiguration _config;
+
+    public HomeController(ILogger<HomeController> logger, IHttpClientFactory client, IConfiguration config)
     {
-        private static HttpClient _httpClient = new HttpClient();
-        private const string baseUrl = "https://api.openai.com/v1/images/generations";
-        private readonly IConfiguration _configuration;
-        public HomeController(IConfiguration Config)
-        {
-            _configuration = Config;
-        }
+        _logger = logger;
+        _httpclient = client;
+        _config = config;
+    }
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
+    public IActionResult Index()
+    {
+        return View(new AvatarForm { });
+    }
 
-        [HttpGet]
-        [Route("/privacy")]
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Index(Avatar avatarDetails)
+    [HttpPost]
+    public async Task<IActionResult> Index(AvatarForm form)
+    {
+        if (ModelState.IsValid)
         {
             try
-            {   
-                string apiKey = _configuration["OpenAI_API_Key"];
-                _httpClient.DefaultRequestHeaders.Remove("Authorization"); //allows to set new header
-                _httpClient.DefaultRequestHeaders.Add("Authorization", apiKey);
-                _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            {
+                HttpClient c = _httpclient.CreateClient();
+                c.BaseAddress = new Uri("https://api.openai.com/v1/images/generations");
+                c.DefaultRequestHeaders.Add("Authorization", "Bearer " + _config["open_ai_api_key"]);
+                c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                //generate prompt to send to openai based on users avatar details
-                //ex: a painting of a fat man
-                string PROMPT;
-                if (avatarDetails.gender != null)
+                var content = new StringContent(JsonSerializer.Serialize(new ImageBodyFormat { prompt = $"A {form.AdjectiveSelected} {form.BaseAvatarSelect}, with the picuture having a {form.FinishSelected} aesthetic", n = 1, size = "256x256" }), Encoding.UTF8, "application/json");
+                HttpResponseMessage res = await c.PostAsync(c.BaseAddress.ToString(), content);
+
+                if (res.IsSuccessStatusCode)
                 {
-                    string g = avatarDetails.gender == "guy" ? "man" : "woman";
-                    PROMPT = "A " + avatarDetails.finish + " picture of a " + avatarDetails.adjective + " " + g;
-                }
-                else
-                {
-                    PROMPT = "A " + avatarDetails.finish + " picture of a " + avatarDetails.adjective + " " + avatarDetails.base_avatar;
-                }
+                    TempData["success"] = true;
+                    TempData["msg"] = "Image successfully generated!";
+                    TempData["query"] = $"A {form.AdjectiveSelected} {form.BaseAvatarSelect}, with the picuture having a {form.FinishSelected} aesthetic";
 
-                ImageGeneration newImage = new ImageGeneration();
-                if(newImage.size != "256x256") {
-                    TempData["500"] = "There was an error while generating the image. Try again.";
-                    TempData["Error"] = "The image that being generated was too large.";
-                    return RedirectToAction("Index");
-                }
-                newImage.prompt = PROMPT;
+                    string resBody = await res.Content.ReadAsStringAsync();
+                    OpenAiImageResponse imgData = JsonSerializer.Deserialize<OpenAiImageResponse>(resBody)!;
 
-                var req = await _httpClient.PostAsJsonAsync(baseUrl, newImage);
-                var res = await req.Content.ReadAsStringAsync();
+                    if (imgData.data != null && imgData.data.Count > 0)
+                    {
+                        TempData["url"] = imgData.data[0].url;
+                    }
 
-                var responseData = JsonSerializer.Deserialize<ImageResponse>(res);
-                if(responseData != null && responseData.data.Count != 0)
-                {
-                    TempData["200"] = responseData.data[0].url;
-                    TempData["ImageQuery"] = PROMPT;
-                    return RedirectToAction("Index");
+
+                    return View();
                 }
-                else {
-                    TempData["500"] = "There was an error while generating the image. Try again.";
-                    TempData["Error"] = "The query supplied could not generate a result. Try changing the prompts.";
-                    return RedirectToAction("Index");
-                }
+                TempData["success"] = false;
+                TempData["msg"] = "There was an error while making a request to OpenAI";
+                return View();
+
             }
             catch (Exception ex)
             {
-                TempData["500"] = "There was an error while generating the image. Try again.";
-                TempData["Error"] = ex.ToString();
-                return RedirectToAction("Index");
+                TempData["success"] = false;
+                TempData["msg"] = ex.ToString();
+                return View();
             }
 
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //form is not formatted correctly
+        TempData["success"] = false;
+        TempData["msg"] = "Error while binding form to model";
+        return View();
     }
 
-    public class ImageResponse
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
     {
-        public int created { get; set; }
-        public List<ImageUrls> data { get; set; }
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-    public class ImageUrls
-    {
-        public string url { get; set; }
-    }
+}
+
+public class ImageBodyFormat
+{
+    public string prompt { get; set; }
+    public int n;
+    public string size;
+}
+
+public class ImgUrls
+{
+    public string url { get; set; }
+}
+
+public class OpenAiImageResponse
+{
+    public int created { get; set; }
+    public List<ImgUrls> data { get; set; }
+
 }
