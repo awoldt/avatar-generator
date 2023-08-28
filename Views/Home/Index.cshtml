@@ -12,20 +12,17 @@
         }
         </div>
         
-
         <p>2. Select adjective</p>
         <div class="form-group group">
             <select class="form-select group" id="avatar_adj_select" disabled name="AdjectiveSelected" required>
                 @{
                     foreach(var option in Model.AdjectiveOptions) {
                         <option value="@option.Value">@option.Text</option>
-                       
                     }
                 }
             </select> 
         </div>
         
-
         <p>3. Select finish</p>
         <div class="form-group group">
             <select class="form-select group" id="avatar_finish_select" disabled name="FinishSelected" required>
@@ -36,7 +33,6 @@
                 }
             </select> 
         </div>
-
 
         <button class="btn btn-primary" type="submit" disabled id="submit_form_btn">Generate Avatar</button>
     </form>
@@ -58,8 +54,24 @@
         <p>The base will be used as a starting point for what the avatar will look like. You can choose from either a human or an animal. From there you can pick one of the many adjectives describing this avatar. You could have a fat and short or a tall and skinny avatar, it's up to you. Finally, select a finish you want for the image that is generated. This refers to the picture's aesthetic, such as a cartoon or a claymation. Each finish can create a unique and custom avatar with similar base images and adjectives, the possibilities are endless.</p>
         <h2>The Power of OpenAI Image Generation</h2>
         <p>We've harnessed the capabilities of the OpenAI Image Generation API to provide you with high-quality avatars that are unlike any others. This cutting-edge technology uses deep learning models to produce images that are visually appealing, diverse, and tailored to your preferences. The AI-generated avatars strike the perfect balance between uniqueness and relatability, allowing you to stand out in the crowded online landscape.</p>
-        <h2>No Accounts, No Strings Attached</h2>
+        <h2>No Account Needed. Always Free.</h2>
         <p>We understand that you value your time and privacy. That's why we've designed OnlineAvatarGenerator.com to be a no-fuss, no-account-needed platform. You don't need to sign up or log in to access our avatar creation services. Simply visit the website, generate an avatar, and make it yours. It's that easy!</p>
+        
+        <p class="mt-5">Here are some examples of the types of avatars you can create using this site. Below each picture has a description of the query that created it. Create unique combinations of attributes to create the best avatar.</p>
+        <div class="row" id="exp_row">
+            <div class="col">
+                <img src="/imgs/example_avatar_1.png" class="exp-img img-fluid" alt="a picture of a creepy claymation human"/>
+                <p>A creepy human with a claymation finish</p>
+            </div>
+            <div class="col">
+                <img src="/imgs/example_avatar_2.png" class="exp-img img-fluid" alt="a picture of a muscular anime fish"/>
+                <p>A muscular fish with an anime finish</p>
+            </div>
+            <div class="col">
+                <img src="/imgs/example_avatar_3.png" class="exp-img img-fluid" alt="a picture of a ugly trippy cow"/>
+                <p>An ugly cow with a trippy finish</p>
+            </div>
+        </div>
         <hr>
         <h2 class="mb-3">FAQs</h2>
         <h3>Is it free?</h3>
