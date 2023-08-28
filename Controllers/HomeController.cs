@@ -42,14 +42,14 @@ public class HomeController : Controller
                 c.DefaultRequestHeaders.Add("Authorization", "Bearer " + _config["open_ai_api_key"]);
                 c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var content = new StringContent(JsonSerializer.Serialize(new ImageBodyFormat { prompt = $"A {form.AdjectiveSelected} {form.BaseAvatarSelect}, with the picuture having a {form.FinishSelected} aesthetic", n = 1, size = "256x256" }), Encoding.UTF8, "application/json");
+                var content = new StringContent(JsonSerializer.Serialize(new ImageBodyFormat { prompt = $"A {form.FinishSelected} picture of a {form.AdjectiveSelected} {form.BaseAvatarSelected}", n = 1, size = "256x256" }), Encoding.UTF8, "application/json");
                 HttpResponseMessage res = await c.PostAsync(c.BaseAddress.ToString(), content);
 
                 if (res.IsSuccessStatusCode)
                 {
                     TempData["success"] = true;
                     TempData["msg"] = "Image successfully generated!";
-                    TempData["query"] = $"A {form.AdjectiveSelected} {form.BaseAvatarSelect}, with the picuture having a {form.FinishSelected} aesthetic";
+                    TempData["query"] = $"A {form.AdjectiveSelected} {form.BaseAvatarSelected}, with the picuture having a {form.FinishSelected} aesthetic";
 
                     string resBody = await res.Content.ReadAsStringAsync();
                     OpenAiImageResponse imgData = JsonSerializer.Deserialize<OpenAiImageResponse>(resBody)!;

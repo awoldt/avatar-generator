@@ -1,15 +1,12 @@
 ﻿@model AvatarForm;
 
 @if(TempData["success"] == null) {
-    <h1>AI Avatar Generator</h1>
-    <p>Easily generate random pictures to use for your online avatar using artificial intelligence! <strong>No account needed.</strong></p>
-
     <form method="post" asp-controller="Home" asp-action="Index" id="form">
         <p>1. Select the base for your avatar</p>
         <div class="btn-group group" role="group">
             @{
             foreach(var option in Model.BaseAvatarOptions) {
-                <input type="radio" class="btn-check" name="BaseAvatarSelect" value="@option.Value" id="@option.Value"/>
+                <input type="radio" class="btn-check" name="BaseAvatarSelected" value="@option.Value" id="@option.Value"/>
                 <label class="btn btn-outline-primary base-avatar-radio-select" for="@option.Value"><img src="@option.Img" alt="@option.AltText"/>@option.Text</label>
             }
         }
@@ -44,10 +41,10 @@
         <button class="btn btn-primary" type="submit" disabled id="submit_form_btn">Generate Avatar</button>
     </form>
 
-    <p class="text-muted mt-5">This app uses <img src="/imgs/openai-logo.svg" alt="openai logo" height="20px" width="20px"><span style="margin-left: 3px">OpenAI</span> image generation</p>
     <hr>
     <div style="max-width: 850px;">
-        <h2>About</h2>
+         <h1>AI Avatar Generator</h1>
+        <p>Easily generate random pictures to use for your online avatar using artificial intelligence! <strong>No account needed.</strong></p>
         <p>Welcome to OnlineAvatarGenerator, your one-stop destination for effortlessly creating unique and captivating online avatars! We understand the importance of a striking avatar that represents your digital identity, and we're here to provide you with a hassle-free solution. Our platform leverages the cutting-edge OpenAI Image Generation API to produce stunning avatars that you can use across various online platforms. No accounts required, no lengthy processes—just instant, eye-catching avatars at your fingertips.</p>
         <p>Our mission is to empower individuals with the ability to express themselves creatively in the digital realm. We recognize that not everyone has the time or resources to craft custom avatars, and that's where we step in. Our platform is built on the belief that everyone deserves an avatar that stands out, whether you're engaging in online discussions, gaming, social media, or any other online activity.</p>
         <p>We hope you enjoy using our avatar generator! Feel free to share with friends and family!</p>
@@ -73,6 +70,8 @@
         <p>You are allowed to generate as many images as you want. Bots spamming the site will be blocked from accessing.</p>
         <h3>How are the images generated?</h3>
         <p>All images generated use OpenAI's DALL·E API. This technology uses basic prompts to generate images on the fly with accuracy and speed. You can read more about DALL·E <a href="https://openai.com/blog/dall-e-api-now-available-in-public-beta/" target="_blank">here</a>.</p>
+        <p class="text-muted mt-5">This app uses <img src="/imgs/openai-logo.svg" alt="openai logo" height="20px" width="20px"><span style="margin-left: 3px">OpenAI</span> image generation</p>
+
     </div>
 } 
 else {
@@ -88,10 +87,7 @@ else {
             if (window.history && window.history.replaceState) {
                 window.history.replaceState(null, null, window.location.href);
             }
-            window.addEventListener('beforeunload', function (event) {
-                event.preventDefault();
-                event.returnValue = 'Are you sure you want to leave? Any unsaved changes will be lost.';
-            });
+          
 
             const g = document.getElementById("generate_another_img_span");
             g.addEventListener("click", () => {

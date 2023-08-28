@@ -10,7 +10,7 @@ public class RaioOptions
 
 public class AvatarForm
 {
-    public string BaseAvatarSelect { get; set; }
+    public string BaseAvatarSelected { get; set; }
     public string AdjectiveSelected { get; set; }
     public string FinishSelected { get; set; }
 
