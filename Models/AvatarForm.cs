@@ -11,28 +11,28 @@ public class RaioOptions
 public class AvatarForm
 {
     public string BaseAvatarSelected { get; set; }
+    public string? Gender { get; set; } //will only show up if user selected human as base
     public string AdjectiveSelected { get; set; }
     public string FinishSelected { get; set; }
 
     public List<RaioOptions> BaseAvatarOptions = new List<RaioOptions> {
         new RaioOptions {Value = "human", Text = "Human", Img="/imgs/human.svg", AltText="human icon"},
-        new RaioOptions {Value = "bird", Text = "Bird", Img="/imgs/bird.svg", AltText="bird icon"},
-        new RaioOptions {Value = "cat", Text = "Cat", Img="/imgs/cat.svg", AltText="cat icon"},
-        new RaioOptions {Value = "cow", Text = "Cow", Img="/imgs/cow.svg", AltText="cow icon"},
-        new RaioOptions {Value = "fish", Text = "Fish", Img="/imgs/fish.svg", AltText="fish icon"}
+        new RaioOptions {Value = "animal", Text = "Animal", Img="/imgs/bird.svg", AltText="animal icon"},
     };
     public List<SelectListItem> AdjectiveOptions = new List<SelectListItem>
         {
+            new SelectListItem { Value = "beautiful", Text = "Beautiful" },
             new SelectListItem { Value = "brave", Text = "Brave" },
             new SelectListItem { Value = "creepy", Text = "Creepy" },
             new SelectListItem { Value = "classy", Text = "Classy" },
             new SelectListItem { Value = "dull", Text = "Dull" },
             new SelectListItem { Value = "fat", Text = "Fat" },
+            new SelectListItem { Value = "greasy", Text = "Greasy" },
             new SelectListItem { Value = "grumpy", Text = "Grumpy" },
+            new SelectListItem { Value = "happy", Text = "Happy" },
             new SelectListItem { Value = "muscular", Text = "Muscular" },
             new SelectListItem { Value = "old", Text = "Old" },
-            new SelectListItem { Value = "poor", Text = "Poor" },
-            new SelectListItem { Value = "rich", Text = "Rich" },
+            new SelectListItem { Value = "pale", Text = "Pale" },
             new SelectListItem { Value = "shiny", Text = "Shiny" },
             new SelectListItem { Value = "short", Text = "Short" },
             new SelectListItem { Value = "skinny", Text = "Skinny" },
@@ -51,5 +51,6 @@ public class AvatarForm
             new SelectListItem { Value = "gothic", Text = "Gothic" },
             new SelectListItem { Value = "minimalism", Text = "Minimalism" },
             new SelectListItem { Value = "trippy", Text = "Trippy" },
+            new SelectListItem { Value = "vintage", Text = "Vintage" },
         };
 }

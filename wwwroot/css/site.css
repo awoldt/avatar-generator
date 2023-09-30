@@ -6,6 +6,10 @@
   font-family: "TitilliumWebBold";
   src: url("../fonts/TitilliumWeb-Bold.ttf");
 }
+@font-face {
+  font-family: "Kanit";
+  src: url("../fonts/Kanit-Regular.ttf");
+}
 
 h1, h2, h3 {
   font-family: "TitilliumWebBold"

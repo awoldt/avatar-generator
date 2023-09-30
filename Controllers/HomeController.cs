@@ -42,14 +42,40 @@ public class HomeController : Controller
                 c.DefaultRequestHeaders.Add("Authorization", "Bearer " + _config["open_ai_api_key"]);
                 c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var content = new StringContent(JsonSerializer.Serialize(new ImageBodyFormat { prompt = $"A {form.FinishSelected} picture of a {form.AdjectiveSelected} {form.BaseAvatarSelected}", n = 1, size = "256x256" }), Encoding.UTF8, "application/json");
-                HttpResponseMessage res = await c.PostAsync(c.BaseAddress.ToString(), content);
+                HttpResponseMessage? res = null;
+
+                //HUMAN BASE AVATAR
+                if (form.BaseAvatarSelected == "human")
+                {
+                    var content = new StringContent(JsonSerializer.Serialize(new ImageBodyFormat { prompt = $"A {form.FinishSelected} picture of a {form.AdjectiveSelected} {form.Gender}", n = 1, size = "256x256" }), Encoding.UTF8, "application/json");
+                    res = await c.PostAsync(c.BaseAddress.ToString(), content);
+                }
+                //ANIMAL BASE AVATAR
+                else if (form.BaseAvatarSelected == "animal")
+                {
+                    var content = new StringContent(JsonSerializer.Serialize(new ImageBodyFormat { prompt = $"A {form.FinishSelected} picture of a random {form.AdjectiveSelected} animal", n = 1, size = "256x256" }), Encoding.UTF8, "application/json");
+                    res = await c.PostAsync(c.BaseAddress.ToString(), content);
+                }
+                //ERROR, NO BASE AVATAR VALUE IN FORM
+                else
+                {
+                    TempData["success"] = false;
+                    TempData["msg"] = "There was an error generating the base avatar";
+                    return View();
+                }
+
+                if (res == null)
+                {
+                    TempData["success"] = false;
+                    TempData["msg"] = "There was an error while generating avatar";
+                    return View();
+                }
 
                 if (res.IsSuccessStatusCode)
                 {
                     TempData["success"] = true;
                     TempData["msg"] = "Image successfully generated!";
-                    TempData["query"] = $"A {form.AdjectiveSelected} {form.BaseAvatarSelected}, with the picuture having a {form.FinishSelected} aesthetic";
+                    TempData["query"] = form.BaseAvatarSelected == "human" ? $"A {form.AdjectiveSelected} {form.Gender}, with the picuture having a {form.FinishSelected} aesthetic" : $"A random {form.AdjectiveSelected} animal, with the picuture having a {form.FinishSelected} aesthetic";
 
                     string resBody = await res.Content.ReadAsStringAsync();
                     OpenAiImageResponse imgData = JsonSerializer.Deserialize<OpenAiImageResponse>(resBody)!;
@@ -78,7 +104,7 @@ public class HomeController : Controller
 
         //form is not formatted correctly
         TempData["success"] = false;
-        TempData["msg"] = "Error while binding form to model";
+        TempData["msg"] = "Error while accessing form data";
         return View();
     }
 

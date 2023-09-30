@@ -3,7 +3,7 @@
 @if(TempData["success"] == null) {
     <form method="post" asp-controller="Home" asp-action="Index" id="form">
         <p>1. Select the base for your avatar</p>
-        <div class="btn-group group" role="group">
+        <div class="btn-group group" role="group" id="base_select">
             @{
             foreach(var option in Model.BaseAvatarOptions) {
                 <input type="radio" class="btn-check" name="BaseAvatarSelected" value="@option.Value" id="@option.Value"/>
@@ -41,7 +41,7 @@
     <div style="max-width: 850px;">
          <h1>AI Avatar Generator</h1>
         <p>Easily generate random pictures to use for your online avatar using artificial intelligence! <strong>No account needed.</strong></p>
-        <p>Welcome to OnlineAvatarGenerator, your one-stop destination for effortlessly creating unique and captivating online avatars! We understand the importance of a striking avatar that represents your digital identity, and we're here to provide you with a hassle-free solution. Our platform leverages the cutting-edge OpenAI Image Generation API to produce stunning avatars that you can use across various online platforms. No accounts required, no lengthy processes—just instant, eye-catching avatars at your fingertips.</p>
+        <p>Welcome to OnlineAvatarGenerator, your one-stop destination for effortlessly creating unique and captivating online avatars! We understand the importance of a striking avatar that represents your digital identity, and we're here to provide you with a hassle-free solution. Our platform leverages the cutting-edge OpenAI Image Generation API to produce stunning avatars that you can use across various online platforms. No accounts required, no lengthy processes — just instant, eye-catching avatars at your fingertips.</p>
         <p>Our mission is to empower individuals with the ability to express themselves creatively in the digital realm. We recognize that not everyone has the time or resources to craft custom avatars, and that's where we step in. Our platform is built on the belief that everyone deserves an avatar that stands out, whether you're engaging in online discussions, gaming, social media, or any other online activity.</p>
         <p>We hope you enjoy using our avatar generator! Feel free to share with friends and family!</p>
         <h2>How to Use</h2>
@@ -51,7 +51,7 @@
             <li>Adjective describing this avatar</li>
             <li>The type of finish you want to have for the image</li>
         </ol>
-        <p>The base will be used as a starting point for what the avatar will look like. You can choose from either a human or an animal. From there you can pick one of the many adjectives describing this avatar. You could have a fat and short or a tall and skinny avatar, it's up to you. Finally, select a finish you want for the image that is generated. This refers to the picture's aesthetic, such as a cartoon or a claymation. Each finish can create a unique and custom avatar with similar base images and adjectives, the possibilities are endless.</p>
+        <p>The base will be used as a starting point for what the avatar will look like. You can choose from either a human or an animal. If you select a human as your base avatar you must choose what gender you would like your avatar to be. If you select an anaimal, a random animal will be used for your avatar. From there you can pick one of the many adjectives describing this avatar. You could have a fat and short or a tall and skinny avatar, it's up to you. Finally, select a finish you want for the image that is generated. This refers to the picture's aesthetic, such as a cartoon or a claymation. Each finish can create a unique and custom avatar with similar base images and adjectives, the possibilities are endless.</p>
         <h2>The Power of OpenAI Image Generation</h2>
         <p>We've harnessed the capabilities of the OpenAI Image Generation API to provide you with high-quality avatars that are unlike any others. This cutting-edge technology uses deep learning models to produce images that are visually appealing, diverse, and tailored to your preferences. The AI-generated avatars strike the perfect balance between uniqueness and relatability, allowing you to stand out in the crowded online landscape.</p>
         <h2>No Account Needed. Always Free.</h2>
@@ -61,15 +61,15 @@
         <div class="row" id="exp_row">
             <div class="col">
                 <img src="/imgs/example_avatar_1.png" class="exp-img img-fluid" alt="a picture of a creepy claymation human"/>
-                <p>A creepy human with a claymation finish</p>
+                <p class="text-center mt-4">A creepy human with a claymation finish</p>
             </div>
             <div class="col">
                 <img src="/imgs/example_avatar_2.png" class="exp-img img-fluid" alt="a picture of a muscular anime fish"/>
-                <p>A muscular fish with an anime finish</p>
+                <p class="text-center mt-4">A muscular fish with an anime finish</p>
             </div>
             <div class="col">
                 <img src="/imgs/example_avatar_3.png" class="exp-img img-fluid" alt="a picture of a ugly trippy cow"/>
-                <p>An ugly cow with a trippy finish</p>
+                <p class="text-center mt-4">An ugly cow with a trippy finish</p>
             </div>
         </div>
         <hr>
@@ -82,6 +82,8 @@
         <p>You are allowed to generate as many images as you want. Bots spamming the site will be blocked from accessing.</p>
         <h3>How are the images generated?</h3>
         <p>All images generated use OpenAI's DALL·E API. This technology uses basic prompts to generate images on the fly with accuracy and speed. You can read more about DALL·E <a href="https://openai.com/blog/dall-e-api-now-available-in-public-beta/" target="_blank">here</a>.</p>
+        <hr>
+        <p><i>Please be aware that the avatars generated may not consistently align with the provided descriptions. Since the generated images are inherently random, the resulting pictures can occasionally appear unconventional and may not precisely match your intended criteria.</i></p>
         <p class="text-muted mt-5">This app uses <img src="/imgs/openai-logo.svg" alt="openai logo" height="20px" width="20px"><span style="margin-left: 3px">OpenAI</span> image generation</p>
 
     </div>
