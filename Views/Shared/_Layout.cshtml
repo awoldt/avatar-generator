@@ -1,43 +1,48 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OnlineAvatarGenerator - Create a Free Avatar in Seconds</title>
-    <meta name="description" content="Instantly craft unique online avatars without any account requirements. Our free website offers a seamless avatar creation experience, enabling you to personalize and stylize your digital identity effortlessly.">
+    <meta name="description"
+        content="Instantly craft unique online avatars without any account requirements. Our free website offers a seamless avatar creation experience, enabling you to personalize and stylize your digital identity effortlessly.">
     <meta property="og:title" content="Generate an online avatar in seconds">
     <meta property="og:site_name" content="OnlineAvatarGenerator">
-    <meta property="og:url" content="https://onlineavatargenerator.com"/>
-    <meta property="og:description" content="Easily generate an avatar for your online persona in seconds using AI. No account needed, create as many images as you want for free.">
+    <meta property="og:url" content="https://onlineavatargenerator.com" />
+    <meta property="og:description"
+        content="Easily generate an avatar for your online persona in seconds using AI. No account needed, create as many images as you want for free.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://onlineavatargenerator.com/favicon.ico">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/avatargeneratorV2.styles.css" asp-append-version="true" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2QPD9Y02W3"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-2QPD9Y02W3');
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "jf8a10w9wv");
     </script>
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" ><img src="~/imgs/brand-img.svg" alt="brand image"/><span style="font-family: Kanit;">OnlineAvatarGenerator</span></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img
+                        src="~/imgs/brand-img.svg" alt="brand image" /><span
+                        style="font-family: Kanit;">OnlineAvatarGenerator</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                       
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
@@ -52,7 +57,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            <a href="https://awoldt.com" style="text-decoration: none; color: rgb(108, 117, 125)"><img src="~/imgs/brush.svg" alt="paint brush icon"/> <b>Made by Awoldt</b></a>
+            <a href="https://awoldt.com" style="text-decoration: none; color: rgb(108, 117, 125)"><img
+                    src="~/imgs/brush.svg" alt="paint brush icon" /> <b>Made by Awoldt</b></a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -60,4 +66,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
