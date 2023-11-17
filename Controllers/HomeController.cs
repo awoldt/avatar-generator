@@ -9,13 +9,11 @@ namespace avatargeneratorV2.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IHttpClientFactory _httpclient;
     private readonly IConfiguration _config;
 
-    public HomeController(ILogger<HomeController> logger, IHttpClientFactory client, IConfiguration config)
+    public HomeController(IHttpClientFactory client, IConfiguration config)
     {
-        _logger = logger;
         _httpclient = client;
         _config = config;
     }
@@ -23,11 +21,6 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         return View(new AvatarForm { });
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [HttpPost]
