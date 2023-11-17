@@ -1,37 +1,44 @@
 ﻿@model AvatarForm;
 
-@if(TempData["success"] == null) {
+@if (TempData["success"] == null)
+{
     <form method="post" asp-controller="Home" asp-action="Index" id="form">
         <p>1. Select the base for your avatar</p>
         <div class="btn-group group" role="group" id="base_select">
             @{
-            foreach(var option in Model.BaseAvatarOptions) {
-                <input type="radio" class="btn-check" name="BaseAvatarSelected" value="@option.Value" id="@option.Value"/>
-                <label class="btn btn-outline-primary base-avatar-radio-select" for="@option.Value"><img src="@option.Img" alt="@option.AltText"/>@option.Text</label>
+                foreach (var option in Model.BaseAvatarOptions)
+                {
+                    <input type="radio" class="btn-check" name="BaseAvatarSelected" value="@option.Value" id="@option.Value" />
+                    <label class="btn btn-outline-primary base-avatar-radio-select" for="@option.Value"><img src="@option.Img"
+                            alt="@option.AltText" />@option.Text</label>
+                }
             }
-        }
         </div>
-        
+
         <p>2. Select adjective</p>
         <div class="form-group group">
             <select class="form-select group" id="avatar_adj_select" disabled name="AdjectiveSelected" required>
                 @{
-                    foreach(var option in Model.AdjectiveOptions) {
-                        <option value="@option.Value">@option.Text</option>
+                    <option value="@Model.AdjectiveOptions[0].Value" selected>@Model.AdjectiveOptions[0].Text</option>
+                    for (var i = 1; i < Model.AdjectiveOptions.Count; ++i)
+                    {
+                        <option value="@Model.AdjectiveOptions[i].Value">@Model.AdjectiveOptions[i].Text</option>
                     }
                 }
-            </select> 
+            </select>
         </div>
-        
+
         <p>3. Select finish</p>
         <div class="form-group group">
             <select class="form-select group" id="avatar_finish_select" disabled name="FinishSelected" required>
                 @{
-                    foreach(var option in Model.FinishOptions) {
-                        <option value="@option.Value">@option.Text</option>
+                   <option value="@Model.FinishOptions[0].Value" selected>@Model.FinishOptions[0].Text</option>
+                   for (var i = 1; i < Model.FinishOptions.Count; ++i)
+                    {
+                        <option value="@Model.FinishOptions[i].Value">@Model.FinishOptions[i].Text</option>
                     }
                 }
-            </select> 
+            </select>
         </div>
 
         <button class="btn btn-primary" type="submit" disabled id="submit_form_btn">Generate Avatar</button>
@@ -39,36 +46,59 @@
 
     <hr>
     <div style="max-width: 850px;">
-         <h1>AI Avatar Generator</h1>
-        <p>Easily generate random pictures to use for your online avatar using artificial intelligence! <strong>No account needed.</strong></p>
-        <p>Welcome to OnlineAvatarGenerator, your one-stop destination for effortlessly creating unique and captivating online avatars! We understand the importance of a striking avatar that represents your digital identity, and we're here to provide you with a hassle-free solution. Our platform leverages the cutting-edge OpenAI Image Generation API to produce stunning avatars that you can use across various online platforms. No accounts required, no lengthy processes — just instant, eye-catching avatars at your fingertips.</p>
-        <p>Our mission is to empower individuals with the ability to express themselves creatively in the digital realm. We recognize that not everyone has the time or resources to craft custom avatars, and that's where we step in. Our platform is built on the belief that everyone deserves an avatar that stands out, whether you're engaging in online discussions, gaming, social media, or any other online activity.</p>
+        <h1>AI Avatar Generator</h1>
+        <p>Easily generate random pictures to use for your online avatar using artificial intelligence! <strong>No account
+                needed.</strong></p>
+        <p>Welcome to OnlineAvatarGenerator, your one-stop destination for effortlessly creating unique and captivating
+            online avatars! We understand the importance of a striking avatar that represents your digital identity, and
+            we're here to provide you with a hassle-free solution. Our platform leverages the cutting-edge OpenAI Image
+            Generation API to produce stunning avatars that you can use across various online platforms. No accounts
+            required, no lengthy processes — just instant, eye-catching avatars at your fingertips.</p>
+        <p>Our mission is to empower individuals with the ability to express themselves creatively in the digital realm. We
+            recognize that not everyone has the time or resources to craft custom avatars, and that's where we step in. Our
+            platform is built on the belief that everyone deserves an avatar that stands out, whether you're engaging in
+            online discussions, gaming, social media, or any other online activity.</p>
         <p>We hope you enjoy using our avatar generator! Feel free to share with friends and family!</p>
         <h2>How to Use</h2>
-        <p>Generating an image is easy and quick. There are three main prompts that you must customize in order to get an avatar back:</p>
+        <p>Generating an image is easy and quick. There are three main prompts that you must customize in order to get an
+            avatar back:</p>
         <ol>
             <li>Base image which will serve as the template for your new avatar</li>
             <li>Adjective describing this avatar</li>
             <li>The type of finish you want to have for the image</li>
         </ol>
-        <p>The base will be used as a starting point for what the avatar will look like. You can choose from either a human or an animal. If you select a human as your base avatar you must choose what gender you would like your avatar to be. If you select an anaimal, a random animal will be used for your avatar. From there you can pick one of the many adjectives describing this avatar. You could have a fat and short or a tall and skinny avatar, it's up to you. Finally, select a finish you want for the image that is generated. This refers to the picture's aesthetic, such as a cartoon or a claymation. Each finish can create a unique and custom avatar with similar base images and adjectives, the possibilities are endless.</p>
+        <p>The base will be used as a starting point for what the avatar will look like. You can choose from either a human
+            or an animal. If you select a human as your base avatar you must choose what gender you would like your avatar
+            to be. If you select an anaimal, a random animal will be used for your avatar. From there you can pick one of
+            the many adjectives describing this avatar. You could have a fat and short or a tall and skinny avatar, it's up
+            to you. Finally, select a finish you want for the image that is generated. This refers to the picture's
+            aesthetic, such as a cartoon or a claymation. Each finish can create a unique and custom avatar with similar
+            base images and adjectives, the possibilities are endless.</p>
         <h2>The Power of OpenAI Image Generation</h2>
-        <p>We've harnessed the capabilities of the OpenAI Image Generation API to provide you with high-quality avatars that are unlike any others. This cutting-edge technology uses deep learning models to produce images that are visually appealing, diverse, and tailored to your preferences. The AI-generated avatars strike the perfect balance between uniqueness and relatability, allowing you to stand out in the crowded online landscape.</p>
+        <p>We've harnessed the capabilities of the OpenAI Image Generation API to provide you with high-quality avatars that
+            are unlike any others. This cutting-edge technology uses deep learning models to produce images that are
+            visually appealing, diverse, and tailored to your preferences. The AI-generated avatars strike the perfect
+            balance between uniqueness and relatability, allowing you to stand out in the crowded online landscape.</p>
         <h2>No Account Needed. Always Free.</h2>
-        <p>We understand that you value your time and privacy. That's why we've designed OnlineAvatarGenerator.com to be a no-fuss, no-account-needed platform. You don't need to sign up or log in to access our avatar creation services. Simply visit the website, generate an avatar, and make it yours. It's that easy!</p>
-        
-        <p class="mt-5">Here are some examples of the types of avatars you can create using this site. Below each picture has a description of the query that created it. Create unique combinations of attributes to create the best avatar.</p>
+        <p>We understand that you value your time and privacy. That's why we've designed OnlineAvatarGenerator.com to be a
+            no-fuss, no-account-needed platform. You don't need to sign up or log in to access our avatar creation services.
+            Simply visit the website, generate an avatar, and make it yours. It's that easy!</p>
+
+        <p class="mt-5">Here are some examples of the types of avatars you can create using this site. Below each picture
+            has a description of the query that created it. Create unique combinations of attributes to create the best
+            avatar.</p>
         <div class="row" id="exp_row">
             <div class="col">
-                <img src="/imgs/example_avatar_1.png" class="exp-img img-fluid" alt="a picture of a creepy claymation human"/>
+                <img src="/imgs/example_avatar_1.png" class="exp-img img-fluid"
+                    alt="a picture of a creepy claymation human" />
                 <p class="text-center mt-4">A creepy human with a claymation finish</p>
             </div>
             <div class="col">
-                <img src="/imgs/example_avatar_2.png" class="exp-img img-fluid" alt="a picture of a muscular anime fish"/>
+                <img src="/imgs/example_avatar_2.png" class="exp-img img-fluid" alt="a picture of a muscular anime fish" />
                 <p class="text-center mt-4">A muscular fish with an anime finish</p>
             </div>
             <div class="col">
-                <img src="/imgs/example_avatar_3.png" class="exp-img img-fluid" alt="a picture of a ugly trippy cow"/>
+                <img src="/imgs/example_avatar_3.png" class="exp-img img-fluid" alt="a picture of a ugly trippy cow" />
                 <p class="text-center mt-4">An ugly cow with a trippy finish</p>
             </div>
         </div>
@@ -79,29 +109,37 @@
         <h3>What resolution are the images?</h3>
         <p>All images generated will be returned as a 256x256 resolution image. This is to save load times and costs.</p>
         <h3>How many images can I generate?</h3>
-        <p>You are allowed to generate as many images as you want. Bots spamming the site will be blocked from accessing.</p>
+        <p>You are allowed to generate as many images as you want. Bots spamming the site will be blocked from accessing.
+        </p>
         <h3>How are the images generated?</h3>
-        <p>All images generated use OpenAI's DALL·E API. This technology uses basic prompts to generate images on the fly with accuracy and speed. You can read more about DALL·E <a href="https://openai.com/blog/dall-e-api-now-available-in-public-beta/" target="_blank">here</a>.</p>
+        <p>All images generated use OpenAI's DALL·E API. This technology uses basic prompts to generate images on the fly
+            with accuracy and speed. You can read more about DALL·E <a
+                href="https://openai.com/blog/dall-e-api-now-available-in-public-beta/" target="_blank">here</a>.</p>
         <hr>
-        <p><i>Please be aware that the avatars generated may not consistently align with the provided descriptions. Since the generated images are inherently random, the resulting pictures can occasionally appear unconventional and may not precisely match your intended criteria.</i></p>
-        <p class="text-muted mt-5">This app uses <img src="/imgs/openai-logo.svg" alt="openai logo" height="20px" width="20px"><span style="margin-left: 3px">OpenAI</span> image generation</p>
+        <p><i>Please be aware that the avatars generated may not consistently align with the provided descriptions. Since
+                the generated images are inherently random, the resulting pictures can occasionally appear unconventional
+                and may not precisely match your intended criteria.</i></p>
+        <p class="text-muted mt-5">This app uses <img src="/imgs/openai-logo.svg" alt="openai logo" height="20px"
+                width="20px"><span style="margin-left: 3px">OpenAI</span> image generation</p>
 
     </div>
-} 
-else {
-    if((bool)TempData["success"]) {
+}
+else
+{
+    if ((bool)TempData["success"])
+    {
         <div class="alert alert-success">
             <p><b>@TempData["msg"]</b></p>
         </div>
         <p><b>Query: <i>@TempData["query"]</i></b></p>
-        <span id="generate_another_img_span"><img src="/imgs/refresh.svg" alt="refresh icon"/> Generate another image</span>
-        <img src=@TempData["url"] class="img-fluid" id="generated_img"/> 
+        <span id="generate_another_img_span"><img src="/imgs/refresh.svg" alt="refresh icon" /> Generate another image</span>
+        <img src=@TempData["url"] class="img-fluid" id="generated_img" />
 
         <script>
             if (window.history && window.history.replaceState) {
                 window.history.replaceState(null, null, window.location.href);
             }
-          
+
 
             const g = document.getElementById("generate_another_img_span");
             g.addEventListener("click", () => {
@@ -109,12 +147,9 @@ else {
             })
         </script>
     }
-    else {
+    else
+    {
         <p style="color: red">There was an error while generating image</p>
         <p>@TempData["msg"]</p>
-    } 
+    }
 }
-
-
-
-
