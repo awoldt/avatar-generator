@@ -69,8 +69,6 @@ public class IndexModel : PageModel
             new SelectListItem { Value = "vintage", Text = "Vintage" },
         };
 
-
-
     public void OnGet()
     {
 
@@ -82,10 +80,6 @@ public class IndexModel : PageModel
         {
             try
             {
-
-                _logger.LogInformation(BaseAvatarSelected);
-
-
                 const string openAiEndpoint = "https://api.openai.com/v1/images/generations";
                 string promptString = "";
                 // human avatar
@@ -171,7 +165,7 @@ public class OpenAIPostPrompt
     [JsonPropertyName("n")]
     public int NumOfImages { get; set; } = 1;
     [JsonPropertyName("size")]
-    public string Size { get; set; } = "1024x1024";
+    public string Size { get; set; } = "512x512";
 }
 
 public class ImageResponse
