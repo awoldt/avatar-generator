@@ -16,34 +16,39 @@
     <meta property="og:image" content="https://onlineavatargenerator.com/favicon.ico">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/avatargeneratorV2.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/avatar2.styles.css" asp-append-version="true" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img
-                        src="~/imgs/brand-img.svg" alt="brand image" /><span
-                        style="font-family: Kanit;">OnlineAvatarGenerator</span></a>
+            <div class="container">
+                <a class="navbar-brand" href="/"><img src="~/imgs/brand-img.svg" alt="brand image" /><span
+                        style="font-family: Kanit;">OnlineAvatarGenerator</span></a></a>
             </div>
         </nav>
     </header>
     <div class="container">
-        <main class="pb-3">
+        <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            <a href="https://awoldt.com" style="text-decoration: none; color: rgb(108, 117, 125)"><img
+            <a href="https://awoldt.com" style="text-decoration: none; color: rgb(108, 117, 125)" target="_blank"><img
                     src="~/imgs/brush.svg" alt="paint brush icon" /> <b>Made by Awoldt</b></a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

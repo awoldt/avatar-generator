@@ -1,4 +1,4 @@
-﻿const baseAvatarBtns = document.getElementsByClassName("btn-check");
+﻿﻿const baseAvatarBtns = document.getElementsByClassName("btn-check");
 const avatarAdjSelect = document.getElementById("avatar_adj_select");
 const pictureFinishSelect = document.getElementById("avatar_finish_select");
 const formSubmitBtn = document.getElementById("submit_form_btn");

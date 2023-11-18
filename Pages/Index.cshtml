@@ -1,9 +1,10 @@
-﻿@model AvatarForm;
+﻿@page
+@model IndexModel
 
 @if (TempData["success"] == null)
 {
-    <form method="post" asp-controller="Home" asp-action="Index" id="form">
-        <p>1. Select the base for your avatar</p>
+    <form method="post" id="form">
+        <p><b>1. Select the base for your avatar</b></p>
         <div class="btn-group group" role="group" id="base_select">
             @{
                 foreach (var option in Model.BaseAvatarOptions)
@@ -15,7 +16,7 @@
             }
         </div>
 
-        <p>2. Select adjective</p>
+        <p><b>2. Select adjective</b></p>
         <div class="form-group group">
             <select class="form-select group" id="avatar_adj_select" disabled name="AdjectiveSelected" required>
                 @{
@@ -28,12 +29,12 @@
             </select>
         </div>
 
-        <p>3. Select finish</p>
+        <p><b>3. Select finish</b></p>
         <div class="form-group group">
             <select class="form-select group" id="avatar_finish_select" disabled name="FinishSelected" required>
                 @{
-                   <option value="@Model.FinishOptions[0].Value" selected>@Model.FinishOptions[0].Text</option>
-                   for (var i = 1; i < Model.FinishOptions.Count; ++i)
+                    <option value="@Model.FinishOptions[0].Value" selected>@Model.FinishOptions[0].Text</option>
+                    for (var i = 1; i < Model.FinishOptions.Count; ++i)
                     {
                         <option value="@Model.FinishOptions[i].Value">@Model.FinishOptions[i].Text</option>
                     }
@@ -44,7 +45,7 @@
         <button class="btn btn-primary" type="submit" disabled id="submit_form_btn">Generate Avatar</button>
     </form>
 
-    <hr>
+    <hr style="margin-top: 75px;">
     <div style="max-width: 850px;">
         <h1>AI Avatar Generator</h1>
         <p>Easily generate random pictures to use for your online avatar using artificial intelligence! <strong>No account
@@ -129,11 +130,11 @@ else
     if ((bool)TempData["success"])
     {
         <div class="alert alert-success">
-            <p><b>@TempData["msg"]</b></p>
+            <p style="margin-bottom: 0px;"><b>@TempData["msg"]</b></p>
         </div>
         <p><b>Query: <i>@TempData["query"]</i></b></p>
         <span id="generate_another_img_span"><img src="/imgs/refresh.svg" alt="refresh icon" /> Generate another image</span>
-        <img src=@TempData["url"] class="img-fluid" id="generated_img" />
+        <img src=@TempData["imgUrl"] class="img-fluid" id="generated_img" />
 
         <script>
             if (window.history && window.history.replaceState) {
@@ -149,7 +150,10 @@ else
     }
     else
     {
-        <p style="color: red">There was an error while generating image</p>
-        <p>@TempData["msg"]</p>
+        <div class="alert alert-danger">
+            <p>There was an error while generating image</p>
+            <p>@TempData["msg"]</p>
+        </div>
+
     }
 }
