@@ -3,6 +3,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,6 +18,7 @@ public class IndexModel : PageModel
     private readonly ILogger<IndexModel> _logger;
     private readonly IHttpClientFactory _httpclient;
     private readonly IConfiguration _config;
+
 
     public IndexModel(ILogger<IndexModel> logger, IHttpClientFactory client, IConfiguration configuration)
     {
@@ -85,13 +89,14 @@ public class IndexModel : PageModel
                 // human avatar
                 if (BaseAvatarSelected == "human")
                 {
-                    promptString = $"An {FinishSelected} picture of a {AdjectiveSelected} {Gender}";
+                    promptString = $"A {FinishSelected} picture of a {AdjectiveSelected} {Gender}";
                 }
                 //animal avatar
                 else if (BaseAvatarSelected == "animal")
                 {
-                    promptString = $"An {FinishSelected} picture of a {AdjectiveSelected} animal";
+                    promptString = $"A {FinishSelected} picture of a {AdjectiveSelected} animal";
                 }
+                // invalid base avatar
                 else
                 {
                     TempData["success"] = false;
@@ -99,6 +104,7 @@ public class IndexModel : PageModel
                     return Page();
                 }
 
+                // make a request to OpenAI to generate image
                 var http = _httpclient.CreateClient();
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, openAiEndpoint);
                 request.Headers.Add("Authorization", $"Bearer {_config["open_ai_key"]}");
@@ -107,7 +113,6 @@ public class IndexModel : PageModel
                     ImagePrompt = promptString,
                 }), Encoding.UTF8, "application/json");
                 var res = await http.SendAsync(request);
-
 
                 if (res.StatusCode != HttpStatusCode.OK)
                 {
@@ -131,6 +136,35 @@ public class IndexModel : PageModel
                 TempData["query"] = promptString;
                 TempData["imgUrl"] = data.Data[0].ImageUrl;
 
+                // save image to s3
+                AmazonS3Client s3 = new AmazonS3Client(_config["aws_access_key"], _config["aws_secret_key"], RegionEndpoint.USEast1);
+                Random r = new Random();
+                var keyName = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + "_" + r.Next(0, 1000000) + ".png";
+
+                var image = await http.GetAsync(data.Data[0].ImageUrl);
+                var imageBody = await image.Content.ReadAsStreamAsync();
+
+                await s3.PutObjectAsync(new PutObjectRequest
+                {
+                    BucketName = "491292639630-avatar-generator",
+                    Key = keyName,
+                    ContentType = "image/png",
+                    InputStream = imageBody
+                });
+
+                // now save image generation details in database
+                using (var db = new db(_config))
+                {
+                    Avatar a = new Avatar()
+                    {
+                        Query = promptString,
+                        S3Url = $"https://491292639630-avatar-generator.s3.amazonaws.com/{keyName}",
+                        CreatedOn = DateTime.UtcNow
+                    };
+
+                    await db.Avatars.AddAsync(a);
+                    await db.SaveChangesAsync();
+                }
 
                 return Page();
             }
