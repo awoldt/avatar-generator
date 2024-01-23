@@ -2,20 +2,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-public class db : DbContext
+public class Db : DbContext
 {
-    private readonly IConfiguration _config;
-
     public DbSet<Avatar> Avatars { get; set; }
 
-    public db(IConfiguration config)
+    public Db(DbContextOptions<Db> options)
+      : base(options)
     {
-        _config = config;
-    }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql(_config["db_connection_string"]);
     }
 }
 
