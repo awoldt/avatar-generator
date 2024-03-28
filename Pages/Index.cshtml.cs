@@ -18,14 +18,14 @@ public class IndexModel : PageModel
     private readonly ILogger<IndexModel> _logger;
     private readonly IHttpClientFactory _httpclient;
     private readonly IConfiguration _config;
-    private readonly Db _db;
+    private readonly Database _db;
 
-    public IndexModel(ILogger<IndexModel> logger, IHttpClientFactory client, IConfiguration configuration, Db db)
+    public IndexModel(ILogger<IndexModel> logger, IHttpClientFactory client, IConfiguration configuration)
     {
         _logger = logger;
         _httpclient = client;
         _config = configuration;
-        _db = db;
+        _db = new Database(configuration);
     }
 
     public string BaseAvatarSelected { get; set; }
@@ -155,15 +155,14 @@ public class IndexModel : PageModel
 
                 // save image generation details in database
 
-                Avatar a = new Avatar()
+                AvatarDetails a = new AvatarDetails()
                 {
                     Query = promptString,
                     S3Url = $"https://491292639630-avatar-generator.s3.amazonaws.com/{keyName}",
                     CreatedOn = DateTime.UtcNow
                 };
 
-                await _db.Avatars.AddAsync(a);
-                await _db.SaveChangesAsync();
+                await _db.SaveAvatar(a);
 
                 return Page();
             }

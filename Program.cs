@@ -1,15 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
-var connectionString = builder.Configuration.GetConnectionString("db_connection_string") ?? throw new InvalidOperationException("Connection string could not be found");
-builder.Services.AddDbContext<Db>(options =>
-{
-    options.UseNpgsql(connectionString);
-});
 
 var app = builder.Build();
 
