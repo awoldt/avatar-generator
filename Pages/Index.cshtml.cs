@@ -3,9 +3,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Amazon;
-using Amazon.S3;
-using Amazon.S3.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,14 +15,12 @@ public class IndexModel : PageModel
     private readonly ILogger<IndexModel> _logger;
     private readonly IHttpClientFactory _httpclient;
     private readonly IConfiguration _config;
-    private readonly Database _db;
 
     public IndexModel(ILogger<IndexModel> logger, IHttpClientFactory client, IConfiguration configuration)
     {
         _logger = logger;
         _httpclient = client;
         _config = configuration;
-        _db = new Database(configuration);
     }
 
     public string BaseAvatarSelected { get; set; }
@@ -136,33 +131,6 @@ public class IndexModel : PageModel
                 TempData["msg"] = "Avatar successfully generated!";
                 TempData["query"] = promptString;
                 TempData["imgUrl"] = data.Data[0].ImageUrl;
-
-                // save image to s3
-                AmazonS3Client s3 = new AmazonS3Client(_config["aws_access_key"], _config["aws_secret_key"], RegionEndpoint.USEast1);
-                Random r = new Random();
-                var keyName = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + "_" + r.Next(0, 1000000) + ".png";
-
-                var image = await http.GetAsync(data.Data[0].ImageUrl);
-                var imageBody = await image.Content.ReadAsStreamAsync();
-
-                await s3.PutObjectAsync(new PutObjectRequest
-                {
-                    BucketName = "491292639630-avatar-generator",
-                    Key = keyName,
-                    ContentType = "image/png",
-                    InputStream = imageBody
-                });
-
-                // save image generation details in database
-
-                AvatarDetails a = new AvatarDetails()
-                {
-                    Query = promptString,
-                    S3Url = $"https://491292639630-avatar-generator.s3.amazonaws.com/{keyName}",
-                    CreatedOn = DateTime.UtcNow
-                };
-
-                await _db.SaveAvatar(a);
 
                 return Page();
             }

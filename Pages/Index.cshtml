@@ -130,10 +130,10 @@ else
     if ((bool)TempData["success"])
     {
         <div class="alert alert-success">
-            <p style="margin-bottom: 0px;"><b>@TempData["msg"]</b></p>
+            <p style="margin-bottom: 0px;"><b>@TempData["msg"]</b><br><b>Query: <i>@TempData["query"]</i></b></p>
         </div>
-        <p><b>Query: <i>@TempData["query"]</i></b></p>
-        <span id="generate_another_img_span"><img src="/imgs/refresh.svg" alt="refresh icon" /> Generate another image</span>
+        <div id="generate_another_img_span" class="btn btn-primary"> Generate
+            another image</div>
         <img src=@TempData["imgUrl"] class="img-fluid" id="generated_img" />
 
         <script>
