@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Npgsql;
 
 namespace avatar2.Pages;
 
@@ -125,6 +126,18 @@ public class IndexModel : PageModel
                     TempData["msg"] = "There was an error deserializing response content";
 
                     return Page();
+                }
+
+                // Save record in the database
+                using (var conn = new NpgsqlConnection(_config["postgres_connection_string"]))
+                {
+                    await conn.OpenAsync();
+                    var cmd = new NpgsqlCommand(
+                        "INSERT INTO generated_images (prompt) VALUES (@Prompt)", conn);
+
+                    cmd.Parameters.AddWithValue("Prompt", promptString);
+
+                    await cmd.ExecuteNonQueryAsync();
                 }
 
                 TempData["success"] = true;
