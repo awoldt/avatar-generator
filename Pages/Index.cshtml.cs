@@ -13,15 +13,21 @@ namespace avatar2.Pages;
 [BindProperties]
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
     private readonly IHttpClientFactory _httpclient;
     private readonly IConfiguration _config;
+    private readonly string _openAiEndpoint = "https://api.openai.com/v1/images/generations";
+    private readonly Services _services;
+    private readonly DigitalOcean _do;
+    private readonly Db _db;
 
-    public IndexModel(ILogger<IndexModel> logger, IHttpClientFactory client, IConfiguration configuration)
+    public IndexModel(Db db, IHttpClientFactory client, IConfiguration configuration, Services services, DigitalOcean digitalOcean)
     {
-        _logger = logger;
         _httpclient = client;
         _config = configuration;
+        _services = services;
+        _config = configuration;
+        _do = digitalOcean;
+        _db = db;
     }
 
     public string BaseAvatarSelected { get; set; }
@@ -81,69 +87,34 @@ public class IndexModel : PageModel
         {
             try
             {
-                const string openAiEndpoint = "https://api.openai.com/v1/images/generations";
-                string promptString = "";
-                // human avatar
-                if (BaseAvatarSelected == "human")
-                {
-                    promptString = $"A {FinishSelected} picture of a {AdjectiveSelected} {Gender}";
-                }
-                //animal avatar
-                else if (BaseAvatarSelected == "animal")
-                {
-                    promptString = $"A {FinishSelected} picture of a {AdjectiveSelected} animal";
-                }
-                // invalid base avatar
-                else
+                // generate the prompt
+                var prompt = _services.GetPrompt(BaseAvatarSelected, AdjectiveSelected, Gender, FinishSelected);
+                if (prompt == null)
                 {
                     TempData["success"] = false;
-                    TempData["msg"] = "Invalid base avatar";
+                    TempData["msg"] = "Invalid prompt. Please try again.";
                     return Page();
                 }
 
-                // make a request to OpenAI to generate image
-                var http = _httpclient.CreateClient();
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, openAiEndpoint);
-                request.Headers.Add("Authorization", $"Bearer {_config["open_ai_key"]}");
-                request.Content = new StringContent(JsonSerializer.Serialize(new OpenAIPostPrompt
-                {
-                    ImagePrompt = promptString,
-                }), Encoding.UTF8, "application/json");
-                var res = await http.SendAsync(request);
-
-                if (res.StatusCode != HttpStatusCode.OK)
+                // generate the image using OpenAI
+                var imageStream = await _services.GenerateOpenAIImage(_config["open_ai_key"], prompt, _httpclient, _openAiEndpoint);
+                if (imageStream == null)
                 {
                     TempData["success"] = false;
-                    TempData["msg"] = "There was an error while sending the requset";
-
+                    TempData["msg"] = "Error while generating image";
                     return Page();
                 }
 
-                var data = JsonSerializer.Deserialize<ImageResponse>(await res.Content.ReadAsStringAsync());
-                if (data == null)
-                {
-                    TempData["success"] = false;
-                    TempData["msg"] = "There was an error deserializing response content";
+                // upload the image to digital ocean spaces
+                var imageUrl = await _do.UploadImage(imageStream);
 
-                    return Page();
-                }
-
-                // Save record in the database
-                using (var conn = new NpgsqlConnection(_config["postgres_connection_string"]))
-                {
-                    await conn.OpenAsync();
-                    var cmd = new NpgsqlCommand(
-                        "INSERT INTO generated_images (prompt) VALUES (@Prompt)", conn);
-
-                    cmd.Parameters.AddWithValue("Prompt", promptString);
-
-                    await cmd.ExecuteNonQueryAsync();
-                }
+                // save details to the database
+                await _db.SaveToDb(prompt, imageUrl);
 
                 TempData["success"] = true;
                 TempData["msg"] = "Avatar successfully generated!";
-                TempData["query"] = promptString;
-                TempData["imgUrl"] = data.Data[0].ImageUrl;
+                TempData["query"] = prompt;
+                TempData["imgUrl"] = imageUrl;
 
                 return Page();
             }
@@ -169,28 +140,4 @@ public class RaioOptions
     public required string Text;
     public required string Img;
     public required string AltText;
-}
-
-public class OpenAIPostPrompt
-{
-    [JsonPropertyName("prompt")]
-    public string ImagePrompt { get; set; }
-    [JsonPropertyName("n")]
-    public int NumOfImages { get; set; } = 1;
-    [JsonPropertyName("size")]
-    public string Size { get; set; } = "512x512";
-}
-
-public class ImageResponse
-{
-    [JsonPropertyName("created")]
-    public long Created { get; set; }
-    [JsonPropertyName("data")]
-    public List<ImageData> Data { get; set; }
-}
-
-public class ImageData
-{
-    [JsonPropertyName("url")]
-    public string ImageUrl { get; set; }
 }

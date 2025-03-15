@@ -1,8 +1,16 @@
+using Npgsql;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
+builder.Services.AddSingleton<Services>();
+builder.Services.AddSingleton<DigitalOcean>();
+
+var dataSource = NpgsqlDataSource.Create(builder.Configuration.GetConnectionString("postgres_connection_string")!);
+builder.Services.AddSingleton(dataSource);
+builder.Services.AddSingleton<Db>();
 
 var app = builder.Build();
 
