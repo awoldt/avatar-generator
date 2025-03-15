@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create a Free AI Avatar in Seconds</title>
+    <title>@ViewData["Title"]</title>
     <meta name="description"
         content="Instantly craft unique online avatars for free, no account needed. Our tools allow you to create stunnning avatars in seconds using OpenAI Image generation technology.">
     <meta property="og:title" content="Generate an AI avatar in seconds">
@@ -27,11 +27,24 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" href="/"><img src="~/imgs/brand-img.svg" alt="brand image" /><span
-                        style="font-family: Kanit;">OnlineAvatarGenerator</span></a>
+                <a class="navbar-brand" href="/">
+                    <img src="~/imgs/brand-img.svg" alt="brand image" />
+                    <span style="font-family: Kanit;">OnlineAvatarGenerator</span>
+                </a>
+
+                <!-- Navbar Links -->
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav ms-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Privacy" title="View Our Privacy Policy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

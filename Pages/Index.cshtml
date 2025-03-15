@@ -1,5 +1,8 @@
 ﻿@page
 @model IndexModel
+@{
+    ViewData["title"] = "Free Online AI Avatar Generator";
+}
 
 @if (TempData["success"] == null)
 {
@@ -60,7 +63,7 @@
             platform is built on the belief that everyone deserves an avatar that stands out, whether you're engaging in
             online discussions, gaming, social media, or any other online activity.</p>
         <p>We hope you enjoy using our avatar generator! Feel free to share with friends and family!</p>
-       
+
         <h2>No Account Needed. Always Free.</h2>
         <p>We understand that you value your time and privacy. That's why we've designed OnlineAvatarGenerator.com to be a
             no-fuss, no-account-needed platform. You don't need to sign up or log in to access our avatar creation services.
@@ -85,50 +88,79 @@
             </div>
         </div>
         <hr>
-        <h2 class="mb-3">FAQs</h2>
-        <h3>Is it free?</h3>
-        <p>Yes, this service is free and always will be.</p>
-        <h3>What resolution are the images?</h3>
+        <h2>Is it free?</h2>
+        <p>Yes, this service is free and always will be. Generate as many avatars as you want!</p>
+        <h2>Where are my images stored?</h2>
+        <p>All images generated using our service are stored in the cloud. The URL for the image will always be available
+            for you to visit on the public internet. After generating an avatar, copy the URL and share with your friends!</p>
+        <h2>What resolution are the images?</h2>
         <p>All images generated will be returned as a 256x256 resolution image. This is to save load times and costs.</p>
-        <h3>How many images can I generate?</h3>
+        <h2>How many images can I generate?</h2>
         <p>You are allowed to generate as many images as you want. Bots spamming the site will be blocked from accessing.
         </p>
-        <h3>How are the images generated?</h3>
-        <p>All images generated use OpenAI's DALL·E API. This technology uses basic prompts to generate images on the fly
-            with accuracy and speed. You can read more about DALL·E <a
-                href="https://openai.com/blog/dall-e-api-now-available-in-public-beta/" target="_blank">here</a>.</p>
         <hr>
         <p><i>Please be aware that the avatars generated may not consistently align with the provided descriptions. Since
                 the generated images are inherently random, the resulting pictures can occasionally appear unconventional
                 and may not precisely match your intended criteria.</i></p>
-        <p class="text-muted mt-5">This app uses <img src="/imgs/openai-logo.svg" alt="openai logo" height="20px"
-                width="20px"><span style="margin-left: 3px">OpenAI</span> image generation</p>
-
     </div>
 }
 else
 {
-    if ((bool)TempData["success"])
+    @if ((bool)TempData["success"])
     {
-        <div class="alert alert-success">
-            <p style="margin-bottom: 0px;"><b>@TempData["msg"]</b><br><b>Query: <i>@TempData["query"]</i></b></p>
+        <div class="container mt-5 mb-5 d-flex justify-content-center">
+            <div class="card shadow" style="max-width: 600px; width: 100%;">
+                <div class="card-body text-center">
+                    <!-- Alert/Message + Query -->
+                    <h5 class="card-title">@TempData["msg"]</h5>
+                    <p class="card-text">
+                        <strong>Query:</strong> <em>@TempData["query"]</em>
+                    </p>
+
+                    <!-- Generated Image -->
+                    <img src="@TempData["imgUrl"]" alt="Generated Image" class="img-fluid rounded my-3" id="generated_img" />
+
+                    <!-- Image URL + Copy Button -->
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="imageUrlInput" value="@TempData["imgUrl"]" readonly />
+                        <button class="btn btn-outline-secondary" type="button" id="copyButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-copy" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Reload Page Button -->
+                    <button class="btn btn-primary" id="generate_another_img_span">
+                        Generate Another Image
+                    </button>
+                </div>
+            </div>
         </div>
-        <div id="generate_another_img_span" class="btn btn-primary"> Generate
-            another image</div>
-        <img src=@TempData["imgUrl"] class="img-fluid" id="generated_img" />
 
         <script>
+            // Prevent form resubmission on page reload
             if (window.history && window.history.replaceState) {
                 window.history.replaceState(null, null, window.location.href);
             }
 
+            // Copy image URL to clipboard
+            document.getElementById("copyButton").addEventListener("click", function () {
+                const imageUrlInput = document.getElementById("imageUrlInput");
+                imageUrlInput.select();
+                imageUrlInput.setSelectionRange(0, 99999); // for mobile devices
+                document.execCommand("copy");
+            });
 
-            const g = document.getElementById("generate_another_img_span");
-            g.addEventListener("click", () => {
+            // Reload page to generate another image
+            document.getElementById("generate_another_img_span").addEventListener("click", () => {
                 window.location.assign("/");
-            })
+            });
         </script>
     }
+
     else
     {
         <div class="alert alert-danger">
