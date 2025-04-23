@@ -45,8 +45,25 @@
             </select>
         </div>
 
-        <button class="btn btn-primary" type="submit" disabled id="submit_form_btn">Generate Avatar</button>
+        <div class="button-container">
+            <button class="btn btn-primary" type="submit" disabled id="submit_form_btn">Generate Avatar</button>
+            <a href="https://buymeacoffee.com/awoldt" target="_blank" class="support-badge"
+                style="text-decoration: none; color: white">
+                <img src="/imgs/coffee.png" alt="Coffee cup icon" class="coffee-icon">
+                <span>Support the Site</span>
+            </a>
+        </div>
+
+
     </form>
+
+
+
+
+
+
+
+
 
     <hr style="margin-top: 75px;">
     <div style="max-width: 850px;">
@@ -92,7 +109,8 @@
         <p>Yes, this service is free and always will be. Generate as many avatars as you want!</p>
         <h2>Where are my images stored?</h2>
         <p>All images generated using our service are stored in the cloud. The URL for the image will always be available
-            for you to visit on the public internet. After generating an avatar, copy the URL and share with your friends!</p>
+            for you to visit on the public internet. After generating an avatar, copy the URL and share with your friends!
+        </p>
         <h2>What resolution are the images?</h2>
         <p>All images generated will be returned as a 256x256 resolution image. This is to save load times and costs.</p>
         <h2>How many images can I generate?</h2>
@@ -111,16 +129,13 @@ else
         <div class="container mt-5 mb-5 d-flex justify-content-center">
             <div class="card shadow" style="max-width: 600px; width: 100%;">
                 <div class="card-body text-center">
-                    <!-- Alert/Message + Query -->
                     <h5 class="card-title">@TempData["msg"]</h5>
                     <p class="card-text">
                         <strong>Query:</strong> <em>@TempData["query"]</em>
                     </p>
 
-                    <!-- Generated Image -->
                     <img src="@TempData["imgUrl"]" alt="Generated Image" class="img-fluid rounded my-3" id="generated_img" />
 
-                    <!-- Image URL + Copy Button -->
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="imageUrlInput" value="@TempData["imgUrl"]" readonly />
                         <button class="btn btn-outline-secondary" type="button" id="copyButton">
@@ -132,12 +147,22 @@ else
                         </button>
                     </div>
 
-                    <!-- Reload Page Button -->
                     <button class="btn btn-primary" id="generate_another_img_span">
                         Generate Another Image
                     </button>
+
+                    <div class="button-container mt-3">
+                        <a href="https://buymeacoffee.com/awoldt" target="_blank" class="support-badge">
+                            <img src="/imgs/coffee.png" alt="Coffee cup icon" class="coffee-icon">
+                            <span>Support the Site</span>
+                        </a>
+                    </div>
                 </div>
             </div>
+
+
+
+
         </div>
 
         <script>

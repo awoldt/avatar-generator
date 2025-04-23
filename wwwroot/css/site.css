@@ -11,8 +11,10 @@
   src: url("../fonts/Kanit-Regular.ttf");
 }
 
-h1, h2, h3 {
-  font-family: "TitilliumWebBold"
+h1,
+h2,
+h3 {
+  font-family: "TitilliumWebBold";
 }
 
 .btn {
@@ -75,10 +77,10 @@ body {
 }
 
 .navbar-brand {
-  color: white !important
+  color: white !important;
 }
 .nav-item a {
-  color: white !important
+  color: white !important;
 }
 
 .exp-img {
@@ -90,5 +92,37 @@ body {
 }
 
 #exp_row img {
- border-radius: 50%;
+  border-radius: 50%;
+}
+
+.button-container {
+  display: flex; /* Use flexbox to align items in a row */
+  align-items: center; /* Vertically align items */
+  gap: 15px; /* Add space between the buttons */
+  margin-top: 20px; /* Add some space above the buttons */
+}
+
+.support-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: #F87171;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-family: sans-serif;
+  font-size: 1.1em;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.support-badge:hover {
+  background-color: #E55050;
+}
+
+.coffee-icon {
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
 }
