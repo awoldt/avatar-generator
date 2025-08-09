@@ -1,197 +1,332 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["title"] = "Free Online AI Avatar Generator";
+    ViewData["Title"] = "Free Online AI Avatar Generator";
 }
+<!doctype html>
+<html lang="en">
 
-@if (TempData["success"] == null)
-{
-    <form method="post" id="form">
-        <p><b>1. Select the base for your avatar</b></p>
-        <div class="btn-group group" role="group" id="base_select">
-            @{
-                foreach (var option in Model.BaseAvatarOptions)
-                {
-                    <input type="radio" class="btn-check" name="BaseAvatarSelected" value="@option.Value" id="@option.Value" />
-                    <label class="btn btn-outline-primary base-avatar-radio-select" for="@option.Value"><img src="@option.Img"
-                            alt="@option.AltText" />@option.Text</label>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- tailwind (play cdn) MUST be in <head> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { brand: { DEFAULT: '#6366f1', 700: '#4f46e5' } },
+                    boxShadow: { bubble: '0 10px 30px rgba(2,6,23,.08)' },
+                    borderRadius: { bubble: '1.25rem' }
                 }
             }
-        </div>
+        }
+    </script>
+    <style>
+        /* tiny check to prove tailwind loaded */
+        .tw-test {
+            display: none
+        }
+    </style>
+</head>
 
-        <p><b>2. Select adjective</b></p>
-        <div class="form-group group">
-            <select class="form-select group" id="avatar_adj_select" disabled name="AdjectiveSelected" required>
-                @{
-                    <option value="@Model.AdjectiveOptions[0].Value" selected>@Model.AdjectiveOptions[0].Text</option>
-                    for (var i = 1; i < Model.AdjectiveOptions.Count; ++i)
-                    {
-                        <option value="@Model.AdjectiveOptions[i].Value">@Model.AdjectiveOptions[i].Text</option>
-                    }
-                }
-            </select>
-        </div>
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition">
 
-        <p><b>3. Select finish</b></p>
-        <div class="form-group group">
-            <select class="form-select group" id="avatar_finish_select" disabled name="FinishSelected" required>
-                @{
-                    <option value="@Model.FinishOptions[0].Value" selected>@Model.FinishOptions[0].Text</option>
-                    for (var i = 1; i < Model.FinishOptions.Count; ++i)
-                    {
-                        <option value="@Model.FinishOptions[i].Value">@Model.FinishOptions[i].Text</option>
-                    }
-                }
-            </select>
-        </div>
+    <!-- shows only if tailwind failed to load -->
+    <div class="tw-test hidden bg-red-600 text-white px-4 py-2 text-sm">tailwind not loaded</div>
 
-        <div class="button-container">
-            <button class="btn btn-primary" type="submit" disabled id="submit_form_btn">Generate Avatar</button>
-            <a href="https://buymeacoffee.com/awoldt" target="_blank" class="support-badge"
-                style="text-decoration: none; color: white">
-                <img src="/imgs/coffee.png" alt="Coffee cup icon" class="coffee-icon">
-                <span>Support the Site</span>
-            </a>
-        </div>
+    <div class="max-w-4xl mx-auto px-4 py-8 sm:py-12">
+        <header class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl font-bold tracking-tight">AI Avatar Generator</h1>
+        </header>
 
-
-    </form>
-
-
-
-
-
-
-
-
-
-    <hr style="margin-top: 75px;">
-    <div style="max-width: 850px;">
-        <h1>AI Avatar Generator</h1>
-        <p>Easily generate random pictures to use for your online avatar using artificial intelligence! <strong>No account
-                needed.</strong></p>
-        <p>Welcome to OnlineAvatarGenerator, your one-stop destination for effortlessly creating unique and captivating
-            online avatars! We understand the importance of a striking avatar that represents your digital identity, and
-            we're here to provide you with a hassle-free solution. Our platform leverages the cutting-edge OpenAI Image
-            Generation API to produce stunning avatars that you can use across various online platforms. No accounts
-            required, no lengthy processes — just instant, eye-catching avatars at your fingertips.</p>
-        <p>Our mission is to empower individuals with the ability to express themselves creatively in the digital realm. We
-            recognize that not everyone has the time or resources to craft custom avatars, and that's where we step in. Our
-            platform is built on the belief that everyone deserves an avatar that stands out, whether you're engaging in
-            online discussions, gaming, social media, or any other online activity.</p>
-        <p>We hope you enjoy using our avatar generator! Feel free to share with friends and family!</p>
-
-        <h2>No Account Needed. Always Free.</h2>
-        <p>We understand that you value your time and privacy. That's why we've designed OnlineAvatarGenerator.com to be a
-            no-fuss, no-account-needed platform. You don't need to sign up or log in to access our avatar creation services.
-            Simply visit the website, generate an avatar, and make it yours. It's that easy!</p>
-
-        <p class="mt-5">Here are some examples of the types of avatars you can create using this site. Below each picture
-            has a description of the query that created it. Create unique combinations of attributes to create the best
-            avatar.</p>
-        <div class="row" id="exp_row">
-            <div class="col">
-                <img src="/imgs/example_avatar_1.png" class="exp-img img-fluid"
-                    alt="a picture of a creepy claymation human" />
-                <p class="text-center mt-4">A creepy human with a claymation finish</p>
-            </div>
-            <div class="col">
-                <img src="/imgs/example_avatar_2.png" class="exp-img img-fluid" alt="a picture of a muscular anime fish" />
-                <p class="text-center mt-4">A muscular fish with an anime finish</p>
-            </div>
-            <div class="col">
-                <img src="/imgs/example_avatar_3.png" class="exp-img img-fluid" alt="a picture of a ugly trippy cow" />
-                <p class="text-center mt-4">An ugly cow with a trippy finish</p>
-            </div>
-        </div>
-        <hr>
-        <h2>Is it free?</h2>
-        <p>Yes, this service is free and always will be. Generate as many avatars as you want!</p>
-        <h2>Where are my images stored?</h2>
-        <p>All images generated using our service are stored in the cloud. The URL for the image will always be available
-            for you to visit on the public internet. After generating an avatar, copy the URL and share with your friends!
-        </p>
-        <h2>What resolution are the images?</h2>
-        <p>All images generated will be returned as a 256x256 resolution image. This is to save load times and costs.</p>
-        <h2>How many images can I generate?</h2>
-        <p>You are allowed to generate as many images as you want. Bots spamming the site will be blocked from accessing.
-        </p>
-        <hr>
-        <p><i>Please be aware that the avatars generated may not consistently align with the provided descriptions. Since
-                the generated images are inherently random, the resulting pictures can occasionally appear unconventional
-                and may not precisely match your intended criteria.</i></p>
-    </div>
-}
-else
-{
-    @if ((bool)TempData["success"])
-    {
-        <div class="container mt-5 mb-5 d-flex justify-content-center">
-            <div class="card shadow" style="max-width: 600px; width: 100%;">
-                <div class="card-body text-center">
-                    <h5 class="card-title">@TempData["msg"]</h5>
-                    <p class="card-text">
-                        <strong>Query:</strong> <em>@TempData["query"]</em>
-                    </p>
-
-                    <img src="@TempData["imgUrl"]" alt="Generated Image" class="img-fluid rounded my-3" id="generated_img" />
-
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="imageUrlInput" value="@TempData["imgUrl"]" readonly />
-                        <button class="btn btn-outline-secondary" type="button" id="copyButton">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-copy" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
-                            </svg>
-                        </button>
+        @if (TempData["success"] == null)
+        {
+            <section>
+                <form method="post" id="form" class="space-y-8">
+                    <!-- base -->
+                    <div class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-6 sm:p-8 space-y-4">
+                        <p class="font-semibold">1. Select the base for your avatar</p>
+                        <div id="base_select" class="flex flex-wrap gap-4">
+                            @foreach (var option in Model.BaseAvatarOptions)
+                            {
+                                <label
+                                    class="cursor-pointer flex flex-col items-center gap-2 border border-slate-300 dark:border-slate-600 rounded-xl p-3 hover:shadow"
+                                    data-id="@option.Value">
+                                    <input class="hidden" type="radio" name="BaseAvatarSelected" value="@option.Value"
+                                        id="@option.Value" />
+                                    <img src="@option.Img" alt="@option.AltText" class="w-16 h-16 object-contain" />
+                                    <span class="text-sm">@option.Text</span>
+                                </label>
+                            }
+                        </div>
                     </div>
 
-                    <button class="btn btn-primary" id="generate_another_img_span">
-                        Generate Another Image
-                    </button>
+                    <!-- adjective -->
+                    <div class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-6 sm:p-8 space-y-4">
+                        <p class="font-semibold">2. Select adjective</p>
+                        <select id="avatar_adj_select" name="AdjectiveSelected" required disabled
+                            class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2.5"></select>
+                        @{
+                            <text>
+                                <script>
+                                        /* populate same as before to keep logic identical */
+                                        (function () {
+                                            const s = document.getElementById('avatar_adj_select');
+                                            s.innerHTML = `
+                                                                                                                                                    <option value="@Model.AdjectiveOptions[0].Value" selected>@Model.AdjectiveOptions[0].Text</option>
+                                                                                                                                                    @for (var i = 1; i < Model.AdjectiveOptions.Count; ++i)
+                                                                                                                                                    {
+                                                                                                                                                                                                                      @: <option value="@Model.AdjectiveOptions[i].Value">@Model.AdjectiveOptions[i].Text</option>
+                                                                                                                                                    }
+                                                                                                                                                  `;
+                                        })();
+                                </script>
+                            </text>
+                        }
+                    </div>
 
-                    <div class="button-container mt-3">
-                        <a href="https://buymeacoffee.com/awoldt" target="_blank" class="support-badge">
-                            <img src="/imgs/coffee.png" alt="Coffee cup icon" class="coffee-icon">
-                            <span>Support the Site</span>
+                    <!-- finish -->
+                    <div class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-6 sm:p-8 space-y-4">
+                        <p class="font-semibold">3. Select aesthetic</p>
+                        <select id="avatar_finish_select" name="FinishSelected" required disabled
+                            class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2.5"></select>
+                        @{
+                            <text>
+                                <script>
+                                    (function () {
+                                        const s = document.getElementById('avatar_finish_select');
+                                        s.innerHTML = `
+                                                                                                                                                    <option value="@Model.FinishOptions[0].Value" selected>@Model.FinishOptions[0].Text</option>
+                                                                                                                                                    @for (var i = 1; i < Model.FinishOptions.Count; ++i)
+                                                                                                                                                    {
+                                                                                                                                                                                                                      @: <option value="@Model.FinishOptions[i].Value">@Model.FinishOptions[i].Text</option>
+                                                                                                                                                    }
+                                                                                                                                                  `;
+                                    })();
+                                </script>
+                            </text>
+                        }
+                    </div>
+
+                    <!-- actions -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button id="submit_form_btn" type="submit"
+                            class="w-full inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-medium bg-brand text-white hover:bg-brand-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                            disabled>
+                            Generate Avatar
+                        </button>
+
+                        <a href="https://buymeacoffee.com/awoldt" target="_blank"
+                            class="w-full inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-slate-200 text-slate-900 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
+                            <img src="/imgs/coffee.png" alt="coffee cup icon" class="w-5 h-5 mr-2"> Support the Site
                         </a>
                     </div>
+                </form>
+            </section>
+
+            <!-- examples + faq -->
+            <section class="mt-12 sm:mt-16 space-y-6">
+                <a href="/gallery" class="inline-flex items-center gap-2">
+                    <h2 class="text-2xl font-semibold inline-flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-images">
+                            <path d="m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16" />
+                            <path d="M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2" />
+                            <circle cx="13" cy="7" r="1" fill="currentColor" />
+                            <rect x="8" y="2" width="14" height="14" rx="2" />
+                        </svg>
+                        View Gallery
+                    </h2>
+                </a>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <figure class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-4">
+                        <img src="/imgs/example_avatar_1.png" class="rounded-lg w-full"
+                            alt="a picture of a creepy claymation human" />
+                        <figcaption class="text-center mt-3 text-sm">a creepy human with a claymation finish</figcaption>
+                    </figure>
+                    <figure class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-4">
+                        <img src="/imgs/example_avatar_2.png" class="rounded-lg w-full"
+                            alt="a picture of a muscular anime fish" />
+                        <figcaption class="text-center mt-3 text-sm">a muscular fish with an anime finish</figcaption>
+                    </figure>
+                    <figure class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-4">
+                        <img src="/imgs/example_avatar_3.png" class="rounded-lg w-full"
+                            alt="a picture of a ugly trippy cow" />
+                        <figcaption class="text-center mt-3 text-sm">an ugly cow with a trippy finish</figcaption>
+                    </figure>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-6 sm:p-8 space-y-3">
+                    <h3 class="text-xl font-semibold">FAQ</h3>
+                    <p><b>Is it free?</b> Yes. This service will always be free to use.</p>
+                    <p><b>Where are my images stored?</b> Successfully generated images are stored in a cloud
+                        storage bucket that can be accessed with a URL. Once a avatar is generated grab the link and share
+                        with anyone!</p>
+                    <p><b>What resolution are the avatars?</b> Each avatar will be a 256x256 image. We currently do not
+                        support higher resolutions due to cost constraints.</p>
+                    <p><b>How many images can I generate?</b> You can generate unlimited avatars. Go crazy.</p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-6 sm:p-8 space-y-3">
+                    <h2 class="text-xl font-semibold">The Easiest Place to Generate Avatars</h2>
+                    <p>Easily generate random pictures to use for your online avatar using artificial intelligence!
+                        <strong>No account
+                            needed.</strong>
+                    </p>
+
+                    <p>Welcome to OnlineAvatarGenerator, your one-stop destination for effortlessly creating unique and
+                        captivating
+                        online avatars! We understand the importance of a striking avatar that represents your digital
+                        identity, and
+                        we're here to provide you with a hassle-free solution. Our platform leverages the cutting-edge
+                        OpenAI Image
+                        Generation API to produce stunning avatars that you can use across various online platforms. No
+                        accounts
+                        required, no lengthy processes — just instant, eye-catching avatars at your fingertips.</p>
+                    <p>Our mission is to empower individuals with the ability to express themselves creatively in the
+                        digital realm. We
+                        recognize that not everyone has the time or resources to craft custom avatars, and that's where we
+                        step in. Our
+                        platform is built on the belief that everyone deserves an avatar that stands out, whether you're
+                        engaging in
+                        online discussions, gaming, social media, or any other online activity.</p>
+
+                    <p>We hope you enjoy using our avatar generator! Feel free to share with friends and family!</p>
+
+
+                    <h2 class="text-xl font-semibold mt-5">No Account Needed. Always Free.</h2>
+                    <p>We understand that you value your time and privacy. That's why we've designed
+                        OnlineAvatarGenerator.com to be a
+                        no-fuss, no-account-needed platform. You don't need to sign up or log in to access our avatar
+                        creation services.
+                        Simply visit the website, generate an avatar, and make it yours. It's that easy!</p>
+
+
+
+                </div>
+            </section>
+        }
+        else if ((bool)TempData["success"])
+        {
+            <div class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-6 sm:p-8 mt-10 max-w-2xl mx-auto">
+                <h2 class="text-xl font-semibold text-center">@TempData["msg"]</h2>
+
+                <img src="@TempData["imgUrl"]" alt="generated image" class="mx-auto rounded-lg my-6 w-full max-w-xs"
+                    id="generated_img" />
+
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <input id="imageUrlInput" value="@TempData["imgUrl"]" readonly
+                        class="flex-1 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2.5 text-sm" />
+
+                    <div class="flex gap-2">
+                        <button id="copyButton" type="button"
+                            class="px-3 py-2 rounded-lg bg-slate-200 text-slate-900 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
+                            Copy
+                        </button>
+
+                        <a id="openButton" href="@TempData["imgUrl"]" target="_blank" rel="noopener"
+                            class="px-3 py-2 rounded-lg bg-slate-200 text-slate-900 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
+                            Open
+                        </a>
+
+                        <button id="downloadButton" type="button"
+                            class="px-3 py-2 rounded-lg bg-slate-200 text-slate-900 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
+                            Download
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-center">
+                    <button id="generate_another_img_span"
+                        class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-medium bg-brand text-white hover:bg-brand-700">
+                        Generate Another Avatar
+                    </button>
                 </div>
             </div>
 
+            <script>
+                // prevent form resubmission on refresh
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
 
+                // copy url
+                document.getElementById('copyButton').addEventListener('click', () => {
+                    const el = document.getElementById('imageUrlInput');
+                    el.select(); el.setSelectionRange(0, 99999);
+                    document.execCommand('copy');
+                });
 
+                // download image (handles cors-enabled cdn; falls back to opening)
+                document.getElementById('downloadButton').addEventListener('click', async () => {
+                    const url = document.getElementById('imageUrlInput').value;
+                    try {
+                        const res = await fetch(url, { mode: 'cors' }); // requires cdn to send correct cors headers
+                        const blob = await res.blob();
+                        const a = document.createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        // try to keep a simple filename
+                        const guess = (url.split('/').pop() || 'avatar').split('?')[0] || 'avatar';
+                        a.download = guess || 'avatar.png';
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+                    } catch (e) {
+                        // fallback: open in new tab if cors blocks fetch
+                        window.open(url, '_blank', 'noopener');
+                    }
+                });
 
-        </div>
+                // go back
+                document.getElementById('generate_another_img_span').addEventListener('click', () => {
+                    window.location.assign('/');
+                });
+            </script>
+        }
+        else
+        {
+            <div class="mt-8 bg-red-100 text-red-700 p-4 rounded-lg">
+                <p>there was an error while generating image.</p>
+                <p>@TempData["msg"]</p>
+            </div>
+        }
+    </div>
 
-        <script>
-            // Prevent form resubmission on page reload
-            if (window.history && window.history.replaceState) {
-                window.history.replaceState(null, null, window.location.href);
-            }
+    <script>
+        /* enable fields after base selected */
+        const base = document.getElementById('base_select');
+        const adj = document.getElementById('avatar_adj_select');
+        const fin = document.getElementById('avatar_finish_select');
+        const btn = document.getElementById('submit_form_btn');
 
-            // Copy image URL to clipboard
-            document.getElementById("copyButton").addEventListener("click", function () {
-                const imageUrlInput = document.getElementById("imageUrlInput");
-                imageUrlInput.select();
-                imageUrlInput.setSelectionRange(0, 99999); // for mobile devices
-                document.execCommand("copy");
-            });
+        function update() {
+            const chosen = base.querySelector('input[type="radio"]:checked');
+            adj.disabled = !chosen; fin.disabled = !chosen;
+            btn.disabled = !(chosen && adj.value && fin.value);
+            base.querySelectorAll('label').forEach(l => l.classList.remove('ring-2', 'ring-brand', 'border-transparent'));
+            const r = base.querySelector('input[type="radio"]:checked');
+            if (r) r.closest('label').classList.add('ring-2', 'ring-brand', 'border-transparent');
+        }
+        base.addEventListener('change', update);
+        adj.addEventListener('change', update);
+        fin.addEventListener('change', update);
 
-            // Reload page to generate another image
-            document.getElementById("generate_another_img_span").addEventListener("click", () => {
-                window.location.assign("/");
-            });
-        </script>
-    }
+        /* add a loading spinner when generating new avatar */
+        btn.addEventListener("click", () => {
+            const spinner = document.createElement('div');
+            spinner.className = 'animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white';
 
-    else
-    {
-        <div class="alert alert-danger">
-            <p>There was an error while generating image</p>
-            <p>@TempData["msg"]</p>
-        </div>
+            btn.textContent = ""
+            btn.appendChild(spinner);
+        })
+    </script>
+</body>
 
-    }
-}
+</html>

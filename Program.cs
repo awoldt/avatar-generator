@@ -8,7 +8,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<Services>();
 builder.Services.AddSingleton<DigitalOcean>();
 
-var dataSource = NpgsqlDataSource.Create(builder.Configuration.GetConnectionString("postgres_connection_string")!);
+NpgsqlDataSource dataSource = NpgsqlDataSource.Create(builder.Configuration.GetConnectionString("postgres_connection_string")!);
 builder.Services.AddSingleton(dataSource);
 builder.Services.AddSingleton<Db>();
 

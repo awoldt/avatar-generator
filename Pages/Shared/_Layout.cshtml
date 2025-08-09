@@ -1,74 +1,144 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<!doctype html>
+<html lang="en" class="h-full">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <meta name="description"
-        content="Instantly craft unique online avatars for free, no account needed. Our tools allow you to create stunnning avatars in seconds using OpenAI Image generation technology.">
-    <meta property="og:title" content="Generate an AI avatar in seconds">
-    <meta property="og:site_name" content="OnlineAvatarGenerator">
-    <meta property="og:url" content="https://onlineavatargenerator.com" />
-    <meta property="og:description"
-        content="Easily generate an avatar for your online persona in seconds using AI. No account needed, create as many images as you want for free.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://onlineavatargenerator.com/favicon.ico">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/avatar2.styles.css" asp-append-version="true" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>@ViewData["Title"]</title>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="f951f6fe-ee79-4994-8882-decb86635d7b"></script>
+  <meta name="description" content="Instantly craft unique online avatars for free, no account needed." />
+  <meta property="og:title" content="Generate an AI avatar in seconds" />
+  <meta property="og:site_name" content="OnlineAvatarGenerator" />
+  <meta property="og:url" content="https://onlineavatargenerator.com" />
+  <meta property="og:description" content="Easily generate an avatar for your online persona in seconds using AI." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://onlineavatargenerator.com/favicon.ico" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="f951f6fe-ee79-4994-8882-decb86635d7b"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /* tailwind config */
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { brand: { DEFAULT: '#6366f1', 700: '#4f46e5' } },
+          boxShadow: { bubble: '0 10px 30px rgba(2,6,23,.08)' },
+          borderRadius: { bubble: '1.25rem' }
+        }
+      }
+    }
+  </script>
 </head>
 
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" href="/">
-                    <img src="~/imgs/brand-img.svg" alt="brand image" />
-                    <span style="font-family: Kanit;">OnlineAvatarGenerator</span>
-                </a>
+<body class="h-full bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+  <!-- header -->
+  <header
+    class="sticky top-0 z-40 backdrop-blur bg-white/70 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3">
+        <img src="~/imgs/brand-img.svg" alt="brand" class="w-7 h-7">
+        <span class="font-semibold tracking-tight">OnlineAvatarGenerator</span>
+      </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+      <nav class="hidden sm:flex items-center gap-6">
+        <a href="/gallery"
+          class="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">Gallery</a>
+        <a href="/privacy"
+          class="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">Privacy</a>
+        <button id="themeToggle" type="button" aria-label="toggle theme" aria-pressed="false"
+          class="text-sm px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-900 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 inline-flex items-center gap-2">
+          <!-- show moon in light (suggests switching to dark) -->
+          <svg class="h-5 w-5 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <!-- lucide: moon -->
+            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
+          </svg>
+          <!-- show sun in dark (suggests switching to light) -->
+          <svg class="h-5 w-5 hidden dark:inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <!-- lucide: sun -->
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="M4.93 4.93l1.41 1.41" />
+            <path d="M17.66 17.66l1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="M6.34 17.66l-1.41 1.41" />
+            <path d="M19.07 6.93l-1.41 1.41" />
+          </svg>
+          <span class="sr-only">toggle theme</span>
+        </button>
+      </nav>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Privacy" title="View Our Privacy Policy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+      <!-- mobile -->
+      <button id="menuBtn"
+        class="sm:hidden inline-flex items-center px-3 py-2 rounded-lg bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100"
+        aria-label="menu">
+        ☰
+      </button>
     </div>
+    <div id="mobileMenu" class="sm:hidden hidden border-t border-slate-200 dark:border-slate-800">
+      <div class="px-4 py-3 flex flex-col gap-3">
+        <a href="/Privacy" class="text-sm text-slate-700 dark:text-slate-200">Privacy</a>
+        <button id="themeToggleM" type="button" aria-label="toggle theme" aria-pressed="false"
+          class="text-sm px-3 py-1.5 rounded-lg bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100 inline-flex items-center gap-2">
+          <svg class="h-5 w-5 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
+          </svg>
+          <svg class="h-5 w-5 hidden dark:inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="M4.93 4.93l1.41 1.41" />
+            <path d="M17.66 17.66l1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="M6.34 17.66l-1.41 1.41" />
+            <path d="M19.07 6.93l-1.41 1.41" />
+          </svg>
+          <span class="sr-only">toggle theme</span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            <a href="https://awoldt.com" style="text-decoration: none; color: rgb(108, 117, 125)" target="_blank"><img
-                    src="~/imgs/brush.svg" alt="paint brush icon" /> <b>Made by Awoldt</b></a>
-        </div>
-    </footer>
+  <!-- main -->
+  <main class="max-w-6xl mx-auto px-4 py-8 sm:py-12">
+    @RenderBody()
+  </main>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+  <!-- footer -->
+  <footer class="border-t border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-slate-600 dark:text-slate-300">
+      <a href="https://awoldt.com" target="_blank" class="inline-flex items-center gap-2 hover:underline">
+        <img src="~/imgs/brush.svg" alt="paint brush icon" class="w-4 h-4" />
+        <b>Made by Awoldt</b>
+      </a>
+    </div>
+  </footer>
 
-    @await RenderSectionAsync("Scripts", required: false)
+  @await RenderSectionAsync("Scripts", required: false)
+
+  <script>
+    const key = 'oag-theme', html = document.documentElement;
+    const apply = t => t === 'dark' ? html.classList.add('dark') : html.classList.remove('dark');
+    apply(localStorage.getItem(key) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    const toggle = () => { const n = html.classList.contains('dark') ? 'light' : 'dark'; apply(n); localStorage.setItem(key, n); };
+    document.getElementById('themeToggle').addEventListener('click', toggle);
+    document.getElementById('themeToggleM').addEventListener('click', toggle);
+
+    const mBtn = document.getElementById('menuBtn'), m = document.getElementById('mobileMenu');
+    mBtn.addEventListener('click', () => m.classList.toggle('hidden'));
+  </script>
 </body>
 
 </html>

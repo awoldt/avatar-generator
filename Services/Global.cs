@@ -6,22 +6,14 @@ using System.Text.Json.Serialization;
 
 public class Services
 {
-    public string? GetPrompt(string baseAvatar, string adjective, string? gender, string aesthetic)
+    public string? ValidatePrompt(string baseAvatar, string adjective, string aesthetic, string[] validBaseAvatars, string[] validAdjectives, string[] validFinishes)
     {
-        switch (baseAvatar)
+        if (!validBaseAvatars.Contains(baseAvatar) || !validAdjectives.Contains(adjective) || !validFinishes.Contains(aesthetic))
         {
-            case "human":
-                {
-                    if (gender == null) return null; // humans need a gender set
-                    return $"A {aesthetic} picture of a {adjective} {gender}";
-                }
-            case "animal":
-                {
-                    return $"A {aesthetic} picture of a {adjective} animal";
-                }
-
-            default: return null;
+            return null;
         }
+
+        return $"Genearate a {aesthetic} picture of a {adjective} {baseAvatar}.";
     }
 
     public async Task<Stream?> GenerateOpenAIImage(string openAiKey, string imagePrompt, IHttpClientFactory httpClient, string openAIEndpoint)
