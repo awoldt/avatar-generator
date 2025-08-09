@@ -4,7 +4,7 @@
 
 @{
     ViewData["Title"] = "Avatar Gallery";
-    string[]? avatars = Model.Avatars?.Select(x => x.ImageUrl).ToArray() ?? null;
+    Avatar[]? avatars = Model.Avatars;
 }
 <!doctype html>
 <html lang="en">
@@ -40,9 +40,26 @@
     <div class="tw-test hidden bg-red-600 text-white px-4 py-2 text-sm">tailwind not loaded</div>
 
     <div class="max-w-4xl mx-auto px-4 py-8 sm:py-12">
-        <header class="flex items-center justify-between mb-8">
-            <h1 class="text-3xl font-bold tracking-tight">Avatar Gallery</h1>
-            <a href="/" class="text-sm underline">back to generator</a>
+        <header class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight">Avatar Gallery</h1>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                        Here are @(avatars?.Length ?? 0) of the most recent avatars generated
+                    </p>
+                </div>
+
+                <a href="/" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium
+              bg-brand text-white hover:bg-brand-700 shadow-bubble">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-chevron-left-icon lucide-chevron-left">
+                        <path d="m15 18-6-6 6-6" />
+                    </svg>
+                    back to generator
+                </a>
+            </div>
         </header>
 
         <!-- gallery grid -->
@@ -50,22 +67,19 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 @if (avatars == null)
                 {
-
+                    <p>There was an error while fetching gallery. Please try again.</p>
                 }
                 else
                 {
-                    @foreach (var img in avatars)
+                    @foreach (var avatar in avatars)
                     {
                         <figure class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-4">
-                            <a href="@img" target="_blank" rel="noopener">
-                                <img src="@img" class="rounded-lg w-full" />
+                            <a href="@avatar.ImageUrl" target="_blank" rel="noopener">
+                                <img src="@avatar.ImageUrl" class="rounded-lg w-full" />
                             </a>
-                            <div class="mt-3 flex gap-2 justify-center">
-                                <input value="@img" readonly
-                                    class="hidden rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-2 py-1 text-xs" />
 
-
-                            </div>
+                            <figcaption class="text-center mt-3 text-sm">@avatar.ImgageDetails.Adjective @avatar.ImgageDetails.Base with a @avatar.ImgageDetails.Aesthetic aesthetic</figcaption>
+                        
                         </figure>
                     }
                 }

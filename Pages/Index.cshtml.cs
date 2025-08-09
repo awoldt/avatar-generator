@@ -33,7 +33,7 @@ public class IndexModel : PageModel
     public string BaseAvatarSelected { get; set; }
     public string? Gender { get; set; } // only sets value if user selected human as base
     public string AdjectiveSelected { get; set; }
-    public string FinishSelected { get; set; }
+    public string AestheticSelected { get; set; }
 
     public List<RaioOptions> BaseAvatarOptions = new List<RaioOptions> {
         new RaioOptions { Value = "alien", Text = "Alien", Img = "/imgs/alien.svg", AltText = "alien icon" },
@@ -150,7 +150,7 @@ public class IndexModel : PageModel
                 {
                     return x.Value;
                 }).ToArray();
-            string[] validFinishes = FinishOptions.Select(x =>
+            string[] validAesthetics = FinishOptions.Select(x =>
                 {
                     return x.Value;
                 }).ToArray();
@@ -158,7 +158,7 @@ public class IndexModel : PageModel
 
             try
             {
-                var prompt = _services.ValidatePrompt(BaseAvatarSelected, AdjectiveSelected, FinishSelected, validBaseAvatars, validAdjectives, validFinishes);
+                var prompt = _services.ValidatePrompt(BaseAvatarSelected, AdjectiveSelected, AestheticSelected, validBaseAvatars, validAdjectives, validAesthetics);
 
                 if (prompt == null)
                 {
@@ -176,7 +176,7 @@ public class IndexModel : PageModel
                 }
 
                 var imageUrl = await _do.UploadImage(imageStream);
-                await _db.SaveToDb(new Avatar { Id = null, ImageUrl = imageUrl, ImgageDetails = new AvatarDetails { Adjective = AdjectiveSelected, Base = BaseAvatarSelected, Aesthetic = FinishSelected } });
+                await _db.SaveToDb(new Avatar { Id = null, ImageUrl = imageUrl, ImgageDetails = new AvatarDetails { Adjective = AdjectiveSelected, Base = BaseAvatarSelected, Aesthetic = AestheticSelected } });
 
                 TempData["success"] = true;
                 TempData["msg"] = "Avatar successfully generated!";
