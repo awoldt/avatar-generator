@@ -18,5 +18,4 @@ RUN dotnet publish "avatar2.csproj" -c Release -o /app/publish /p:UseAppHost=fal
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENV DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP3SUPPORT=false
 ENTRYPOINT ["dotnet", "avatar2.dll"]
