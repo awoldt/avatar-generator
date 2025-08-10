@@ -33,7 +33,7 @@ public class Db
     public async Task<Avatar[]?> GetGalleryImages()
     {
         List<Avatar> avatars = [];
-        // gets the latest 25 avatars generated
+     
         try
         {
             await using var conn = await _db.OpenConnectionAsync();
