@@ -17,7 +17,7 @@
                 <div class="bg-white dark:bg-slate-800 rounded-bubble shadow-bubble p-6 sm:p-8 space-y-4">
                     <p class="font-semibold">1. Select the base for your avatar</p>
                     <div id="base_select" class="flex flex-wrap gap-4">
-                        @foreach (var option in Model.BaseAvatarOptions)
+                        @foreach (var option in Model.BaseAvatarRadioList)
                         {
                             <label
                                 class="cursor-pointer flex flex-col items-center gap-2 border border-slate-300 dark:border-slate-600 rounded-xl p-3 hover:shadow"
@@ -43,10 +43,10 @@
                                 (function () {
                                     const s = document.getElementById('avatar_adj_select');
                                     s.innerHTML = `
-                                                                                                                                                                            <option value="@Model.AdjectiveOptions[0].Value" selected>@Model.AdjectiveOptions[0].Text</option>
-                                                                                                                                                                            @for (var i = 1; i < Model.AdjectiveOptions.Count; ++i)
+                                                                                                                                                                            <option value="@Model.AdjectivesSelectList[0].Value" selected>@Model.AdjectivesSelectList[0].Text</option>
+                                                                                                                                                                            @for (var i = 1; i < Model.AdjectivesSelectList.Count; ++i)
                                                                                                                                                                             {
-                                                                                                                                                                                                                                                          @: <option value="@Model.AdjectiveOptions[i].Value">@Model.AdjectiveOptions[i].Text</option>
+                                                                                                                                                                                                                                                          @: <option value="@Model.AdjectivesSelectList[i].Value">@Model.AdjectivesSelectList[i].Text</option>
                                                                                                                                                                             }
                                                                                                                                                                           `;
                                 })();
@@ -66,10 +66,10 @@
                                 (function () {
                                     const s = document.getElementById('avatar_finish_select');
                                     s.innerHTML = `
-                                                                                                                                                                            <option value="@Model.FinishOptions[0].Value" selected>@Model.FinishOptions[0].Text</option>
-                                                                                                                                                                            @for (var i = 1; i < Model.FinishOptions.Count; ++i)
+                                                                                                                                                                            <option value="@Model.AestheticsSelectList[0].Value" selected>@Model.AestheticsSelectList[0].Text</option>
+                                                                                                                                                                            @for (var i = 1; i < Model.AestheticsSelectList.Count; ++i)
                                                                                                                                                                             {
-                                                                                                                                                                                                                                                          @: <option value="@Model.FinishOptions[i].Value">@Model.FinishOptions[i].Text</option>
+                                                                                                                                                                                                                                                          @: <option value="@Model.AestheticsSelectList[i].Value">@Model.AestheticsSelectList[i].Text</option>
                                                                                                                                                                             }
                                                                                                                                                                           `;
                                 })();

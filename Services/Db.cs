@@ -30,20 +30,36 @@ public class Db
         }
     }
 
-    public async Task<Avatar[]?> GetGalleryImages()
+    public async Task<Avatar[]?> GetGalleryImages(string? baseAvatar)
     {
         List<Avatar> avatars = [];
         // gets the latest 25 avatars generated
         try
         {
             await using var conn = await _db.OpenConnectionAsync();
-            var cmd = new NpgsqlCommand($@"
-               SELECT * FROM images 
-               ORDER BY created_at DESC
-               limit 100;
-            ", conn);
 
-            await using var reader = await cmd.ExecuteReaderAsync();
+            NpgsqlCommand? cmd = null;
+
+            if (baseAvatar != null)
+            {
+                cmd = new NpgsqlCommand($@"
+                    SELECT * FROM images
+                    WHERE image_details->>'base' = @base_avatar
+                    ORDER BY created_at DESC
+                    limit 100;
+                ", conn);
+                cmd.Parameters.AddWithValue("base_avatar", baseAvatar);
+            }
+            else
+            {
+                cmd = new NpgsqlCommand($@"
+                    SELECT * FROM images 
+                    ORDER BY created_at DESC
+                    limit 100;
+                ", conn);
+            }
+
+            await using var reader = await cmd!.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
                 avatars.Add(new Avatar { ImageUrl = reader.GetString(reader.GetOrdinal("image_url")), ImgageDetails = JsonSerializer.Deserialize<AvatarDetails>(reader.GetString(reader.GetOrdinal("image_details"))) });
@@ -53,7 +69,7 @@ public class Db
         }
         catch (System.Exception)
         {
-            return null;    
+            return null;
         }
     }
 

@@ -13,10 +13,11 @@ public class GalleryPageModel : PageModel
 
   public Avatar[]? Avatars { get; set; }
 
+  public string[] BaseAvatars = Constants.BaseAvatarOptions.Select(x => x.Text).ToArray();
 
   public async Task<IActionResult> OnGetAsync()
   {
-    Avatars = await _db.GetGalleryImages();
+    Avatars = await _db.GetGalleryImages(null);
     return Page();
   }
 }
