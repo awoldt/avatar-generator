@@ -13,7 +13,7 @@ public class GalleryBasePageModel : PageModel
 
   public Avatar[]? Avatars { get; set; }
   public string[] BaseAvatars = Constants.BaseAvatarOptions.Select(x => x.Text).ToArray();
-  public string? BaseFilter { get; set; }
+  public required string BaseFilter { get; set; }
 
   public async Task<IActionResult> OnGetAsync(string baseAvatar)
   {

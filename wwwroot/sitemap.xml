@@ -1,13 +1,35 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
     <url>
         <loc>https://onlineavatargenerator.com</loc>
     </url>
     <url>
         <loc>https://onlineavatargenerator.com/gallery</loc>
     </url>
-       <url>
+    <url>
         <loc>https://onlineavatargenerator.com/privacy</loc>
     </url>
+
+    <url><loc>https://onlineavatargenerator.com/gallery/alien</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/animal</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/anime</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/astronaut</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/bot</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/cartoon</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/creature</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/cyborg</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/dinosaur</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/elf</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/human</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/monster</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/ninja</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/pirate</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/robot</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/superhero</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/vampire</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/wizard</loc></url>
+    <url><loc>https://onlineavatargenerator.com/gallery/zombie</loc></url>
+
 </urlset>

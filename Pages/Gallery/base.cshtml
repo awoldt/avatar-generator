@@ -2,10 +2,10 @@
 @model GalleryBasePageModel
 
 @{
-  ViewData["Title"] = "Avatar Gallery";
+  var baseFilter = Model.BaseFilter;
+  ViewData["Title"] = $"Free {baseFilter[0].ToString().ToUpper() + baseFilter[1..]} Avatar Downloads";
   Avatar[]? avatars = Model.Avatars;
   var bases = Model.BaseAvatars;
-  var baseFilter = Model.BaseFilter;
 }
 
 <!doctype html>
